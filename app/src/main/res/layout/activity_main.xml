@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.mealplanner.Main">
+
+    <TextView
+        android:id="@+id/plan"
+        style="@style/MenuStyle"
+        android:text="Plan a menu" />
+
+    <TextView
+        android:id="@+id/meals"
+        style="@style/MenuStyle"
+        android:text="Meals" />
+
+    <TextView
+        android:id="@+id/ingredients"
+        style="@style/MenuStyle"
+        android:text="Ingredients" />
+
+    <TextView
+        android:id="@+id/dbmanager"
+        style="@style/MenuStyle"
+        android:text="Database Management" />
+
+</LinearLayout>

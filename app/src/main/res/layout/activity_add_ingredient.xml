@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.mealplanner.AddIngredient">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredient:" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/editText"
+            style="@style/MenuStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <requestFocus />
+        </EditText>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:" >
+        </TextView>
+
+        <Spinner
+            android:id="@+id/location_spinner"
+            style="@style/MenuStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location" >
+        </Spinner>
+
+    </LinearLayout>
+
+
+    <CheckBox
+        android:id="@+id/checkbox_protein"
+        style="@style/MenuStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:text="This ingredient contains protein"
+        >
+    </CheckBox>
+
+    <CheckBox
+        android:id="@+id/checkbox_carb"
+        style="@style/MenuStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:text="This ingredient contains carbs"
+        >
+    </CheckBox>
+
+    <Button
+        android:id="@+id/submit_new_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Add this ingredient"
+        >
+
+    </Button>
+</LinearLayout>
