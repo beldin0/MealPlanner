@@ -12,5 +12,11 @@ class Day {
 	public String toString() {
 		return this.name;
 	}
+
+	public void setMeal (Meal meal) {
+		this.meal = meal;
+	}
+
+	public Meal getMeal () {return this.meal;}
 	
 }

@@ -11,7 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class AddIngredient extends AppCompatActivity {
+public class ActivityAddIngredient extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,11 @@ public class AddIngredient extends AppCompatActivity {
 
         ((Spinner)findViewById(R.id.location_spinner)).setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_item, Ingredient.Location.list()));
 
-        ((Button)findViewById(R.id.submit_new_ingredient)).setOnClickListener(new AdapterView.OnClickListener() {
+        findViewById(R.id.submit_new_ingredient).setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Ingredient.add(
-                        Main.ingredientList,
+                        ActivityMain.ingredientList,
                         ((EditText)findViewById(R.id.editText)).getText().toString(),
                         Ingredient.Location.toValue(((Spinner)findViewById(R.id.location_spinner)).getSelectedItem().toString()),
                         ((CheckBox)findViewById(R.id.checkbox_carb)).isChecked(),

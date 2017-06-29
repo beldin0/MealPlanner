@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class IngredientsActivity extends AppCompatActivity {
+public class ActivityIngredients extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,15 +19,15 @@ public class IngredientsActivity extends AppCompatActivity {
 
     private void prepare() {
         setContentView(R.layout.list_main);
-        IngredientAdapter adapter = new IngredientAdapter(this, Main.ingredientList);
+        IngredientAdapter adapter = new IngredientAdapter(this, ActivityMain.ingredientList);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Ingredient clickedIngredient = Main.ingredientList.get(position);
-                Toast.makeText(IngredientsActivity.this, clickedIngredient.getInfo(), Toast.LENGTH_SHORT).show();
+                Ingredient clickedIngredient = ActivityMain.ingredientList.get(position);
+                Toast.makeText(ActivityIngredients.this, clickedIngredient.getInfo(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -35,7 +35,7 @@ public class IngredientsActivity extends AppCompatActivity {
         btn.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addIngredientIntent = new Intent(IngredientsActivity.this, AddIngredient.class);
+                Intent addIngredientIntent = new Intent(ActivityIngredients.this, ActivityAddIngredient.class);
                 startActivity(addIngredientIntent);
             }
         });

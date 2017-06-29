@@ -1,9 +1,11 @@
 package com.example.android.mealplanner;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Meal {
+public class Meal implements Comparable{
 	
 	private String name;
 	private ArrayList<MealIngredient> ingredients;
@@ -63,9 +65,15 @@ public class Meal {
 		return null;
 	}
 
+    public String getInfo() {
+        return name;
+    }
+
 	public MealType getType() {
 		return type;
 	}
+
+	public String toString() {return name;}
 
 	public void setType(MealType type) {
 		this.type = type;
@@ -86,8 +94,14 @@ public class Meal {
 	public void setInAdvance(boolean inAdvance) {
 		this.inAdvance = inAdvance;
 	}
-	
-	public enum MealType {
+
+	@Override
+    public int compareTo(@NonNull Object o) {
+        Meal c = (Meal)o;
+        return this.toString().compareTo(c.toString());
+    }
+
+    public enum MealType {
 		CURRY("Curry"),
 		RISOTTO("Risotto"),
 		ROAST("Roast Dinner"),
@@ -95,7 +109,7 @@ public class Meal {
 		
 		private String mt;
 		
-		private MealType(String mt) {
+		MealType(String mt) {
 			this.mt = mt;
 		}
 		

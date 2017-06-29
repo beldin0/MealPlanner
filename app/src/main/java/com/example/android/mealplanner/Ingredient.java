@@ -85,7 +85,7 @@ public class Ingredient implements Comparable {
 
 		private String locString;
 
-		private Location(String locString) {
+		Location(String locString) {
 			this.locString = locString;
 		}
 
@@ -108,8 +108,8 @@ public static String[] list() {
 
 				public String toString() {
 			return locString;
-		};
+		}
 
-	}
+    }
 
 }
