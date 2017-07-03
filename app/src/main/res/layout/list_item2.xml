@@ -21,9 +21,9 @@
         <TextView
             android:id="@+id/day_meal"
             style="@style/ListItemStyle2"
-            android:textStyle="normal"
             android:layout_height="wrap_content"
             android:layout_weight="4"
+            android:textStyle="normal"
             tools:text="Sample Meal" />
 
 </LinearLayout>

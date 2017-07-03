@@ -1,22 +1,41 @@
 package com.example.android.mealplanner;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class DayAdapter extends ArrayAdapter<Day> {
+import java.util.TreeMap;
 
-    public DayAdapter(Activity context, Day[] week)
-    {
-        super(context, 0, week);
+public class ShoppingListAdapter extends BaseAdapter {
+
+    private TreeMap<String, Pair<Ingredient, Quantity>> map;
+    private String[] mKeys;
+
+    public ShoppingListAdapter(TreeMap<String, Pair<Ingredient, Quantity>> map) {
+        this.map = map;
+        this.mKeys = map.keySet().toArray(new String[map.size()]);
     }
 
-    @NonNull
+    @Override
+    public int getCount() {
+        return map.size();
+    }
+
+    @Override
+    public Pair getItem(int position) {
+        return map.get(mKeys[position]);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
 
@@ -24,33 +43,21 @@ public class DayAdapter extends ArrayAdapter<Day> {
 
         // if no view is passed in to reuse, inflate a new view from the XML layout file
         if (convertView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+            listItemView = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.list_item2, parent, false);
         } else {
             listItemView = convertView;
         }
 
-//        View layout = listItemView.findViewById(R.id.behind);
-//        int color = ContextCompat.getColor(getContext(), bg_color);
-//        layout.setBackgroundColor(color);
-
         // Get the details of the current word from the words ArrayList
-        final Day currentDay = getItem(position);
+        final Pair currentIngredient = getItem(position);
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.day_name);
-        textView.setText(currentDay.toString());
+        textView.setText(currentIngredient.first.toString());
 
         TextView textView2 = (TextView) listItemView.findViewById(R.id.day_meal);
-        textView2.setText(currentDay.getMeal().toString());
-
-//        ImageView imageView = (ImageView) listItemView.findViewById(R.id.icon_image);
-//        if (currentWord.hasImage()) {
-//            imageView.setImageResource(currentWord.getImage_src());
-//            imageView.setVisibility(View.VISIBLE);
-//        } else {
-//            imageView.setVisibility(View.GONE);
-//        }
+        textView2.setText(currentIngredient.second.toString());
 
         return listItemView;
     }

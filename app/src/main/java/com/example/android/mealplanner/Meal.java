@@ -2,28 +2,28 @@ package com.example.android.mealplanner;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Meal implements Comparable{
 	
 	private String name;
-	private ArrayList<MealIngredient> ingredients;
+	private IngredientMap ingredients;
 	private MealType type;
 	private int cookTime;
 	private boolean inAdvance = false;
 
 	public Meal(String name) {
-		ingredients = new ArrayList<>();
+		// ingredients = new Map<Ingredient, Quantity>();
 		this.name = name;
+		ingredients = new IngredientMap();
 	}
 	
-	public ArrayList<MealIngredient> getIngredients() {
+	public IngredientMap getIngredients() {
 		return ingredients;
 	}
 
-	public void add(Ingredient ingredient, int amount, String unit) {
-		this.ingredients.add(new MealIngredient(ingredient, amount, unit));
+	public void add(Ingredient ingredient, Quantity amount) {
+		this.ingredients.put(ingredient, amount);
 	}
 	
 	public void remove(Ingredient ingredient) {
@@ -31,38 +31,18 @@ public class Meal implements Comparable{
 	}
 	
 	public boolean hasCarb() {
-		for (MealIngredient i : ingredients) {
-			if (i.isCarb()) {
-				return true;
-			}
-		}
-		return false;
+		return ingredients.hasCarb();
 	}
 	
 	public boolean hasProtein() {
-		for (MealIngredient i : ingredients) {
-			if (i.isProtein()) {
-				return true;
-			}
-		}
-		return false;
+		return ingredients.hasProtein();
 	}
-	public String carb() {
-		for (MealIngredient i : ingredients) {
-			if (i.isCarb()) {
-				return i.getName();
-			}
-		}
-		return null;
+	public String getCarbName() {
+		return ingredients.getCarbName();
 	}
 	
-	public String protein() {
-		for (MealIngredient i : ingredients) {
-			if (i.isProtein()) {
-				return i.getName();
-			}
-		}
-		return null;
+	public String getProteinName() {
+		return ingredients.getProteinName();
 	}
 
     public String getInfo() {
@@ -73,11 +53,11 @@ public class Meal implements Comparable{
 		return type;
 	}
 
-	public String toString() {return name;}
-
 	public void setType(MealType type) {
 		this.type = type;
 	}
+
+	public String toString() {return name;}
 
 	public int getCookTime() {
 		return cookTime;

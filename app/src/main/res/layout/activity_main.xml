@@ -22,9 +22,4 @@
         style="@style/MenuStyle"
         android:text="Ingredients" />
 
-    <TextView
-        android:id="@+id/dbmanager"
-        style="@style/MenuStyle"
-        android:text="Database Management" />
-
 </LinearLayout>

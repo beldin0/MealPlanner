@@ -19,7 +19,8 @@
         <activity android:name=".ActivityIngredients" />
         <activity android:name=".ActivityAddIngredient" />
         <activity android:name=".ActivityMeals" />
-        <activity android:name=".ActivityGenerate"></activity>
+        <activity android:name=".ActivityGenerate" />
+        <activity android:name=".ActivityShoppingList" />
     </application>
 
 </manifest>

@@ -22,10 +22,6 @@ public class MealIngredient {
 		return ingredient.toString();
 	}
 	
-	public int getId() {
-		return ingredient.id();
-	}
-	
 	public int getAmount() {
 		return amount;
 	}

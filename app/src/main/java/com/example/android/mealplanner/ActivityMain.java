@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class ActivityMain extends AppCompatActivity {
@@ -19,16 +18,15 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ingredientList = new ArrayList<>();
-        Database.getIngredients();
+        ingredientList = ArrayFiller.getIngredients();
         Collections.sort(ingredientList);
 
         mealList = new ArrayList<>();
-        Database.getMeals();
+        ArrayFiller.getMeals();
         Collections.sort(mealList);
 
-        week = Week.get();
-        mealList = Database.getMeals();
+        week = Day.makeWeek();
+        mealList = ArrayFiller.getMeals();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
