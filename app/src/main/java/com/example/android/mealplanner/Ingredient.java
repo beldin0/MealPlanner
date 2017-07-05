@@ -5,26 +5,25 @@ import android.support.annotation.NonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import static org.apache.commons.lang3.text.WordUtils.capitalizeFully;
 
 public class Ingredient implements Comparable {
 
-	private int id;
 	private String name;
 	private Location loc;
 	private boolean carb = false;
 	private boolean protein = false;
 
-	public Ingredient(int id, String name) {
-		this(id, name, false, false);
+	public Ingredient(String name) {
+		this(name, false, false);
 	}
 	
-	public Ingredient(int id, String name, boolean carb, boolean protein) {
-		this(id, proper(name), Location.UNKNOWN, carb, protein);
+	public Ingredient(String name, boolean carb, boolean protein) {
+		this(proper(name), Location.UNKNOWN, carb, protein);
 	}
 	
-	public Ingredient(int id, String name, Location loc, boolean carb, boolean protein) {
-		this.id = id;
+	public Ingredient(String name, Location loc, boolean carb, boolean protein) {
 		this.name = proper(name);
 		this.carb = carb;
 		this.protein = protein;
@@ -32,17 +31,13 @@ public class Ingredient implements Comparable {
 	}
 
 	public static void add(List<Ingredient> list, String name, Location loc, boolean carb, boolean protein) {
-        list.add(new Ingredient(list.size(), proper(name), loc, carb, protein));
+        list.add(new Ingredient(proper(name), loc, carb, protein));
         Collections.sort(list);
     }
 
 	private static String proper (String name) {
         return capitalizeFully(name);
     }
-	
-	public int id() {
-		return id;
-	}
 
 	public String getInfo() {
         return name + (this.carb? " (carb)" : (this.protein? " (protein)" : "")) + "\nFound in: " + loc.toString();

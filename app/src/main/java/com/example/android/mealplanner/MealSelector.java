@@ -12,7 +12,7 @@ public class MealSelector {
     ArrayList<Meal> meals;
 
     public MealSelector () {
-        meals = new ArrayList<Meal>(Database.getMeals());
+        meals = new ArrayList<Meal>(ArrayFiller.getMeals());
     }
 
     public Meal get() {
