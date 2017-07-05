@@ -27,6 +27,9 @@ public class ActivityGenerate extends AppCompatActivity {
         DayAdapter adapter = new DayAdapter(this, ActivityMain.week);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
+
+        Button button = (Button) findViewById(R.id.button_new);
+        button.setVisibility(View.GONE);
     }
 
     @Override
