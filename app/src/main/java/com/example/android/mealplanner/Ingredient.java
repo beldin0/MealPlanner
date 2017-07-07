@@ -41,6 +41,7 @@ public class Ingredient implements Comparable {
 	}
 
 	public String toString() {
+		if (this==null) return "";
 		return name;
 	}
 
@@ -103,7 +104,7 @@ public class Ingredient implements Comparable {
 			return rtn;
 		}
 
-				public String toString() {
+		public String toString() {
 			return locString;
 		}
 

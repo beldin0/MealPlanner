@@ -27,6 +27,6 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     compile 'org.mod4j.org.apache.commons:lang:2.1.0'
+    testCompile 'junit:junit:4.12'
 }

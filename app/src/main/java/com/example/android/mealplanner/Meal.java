@@ -29,6 +29,10 @@ public class Meal implements Comparable{
 		return tmpList;
 	}
 
+	public Quantity getQuantity(Ingredient i) {
+		return ingredients.get(i);
+	}
+
 	public ArrayList<Ingredient> getIngredientsAsArray()
 	{
 		return new ArrayList<Ingredient>(ingredients.keySet());
@@ -36,6 +40,10 @@ public class Meal implements Comparable{
 
 	public void add(Ingredient ingredient, Quantity amount) {
 		this.ingredients.put(ingredient, amount);
+	}
+
+	public void add(IngredientMap iMap) {
+		ingredients.putAll(iMap);
 	}
 	
 	public void remove(Ingredient ingredient) {

@@ -16,6 +16,15 @@ public class MealList extends ArrayList<Meal> {
         dr.addToDatabase(m);
         return b;
     }
+
+    public boolean add (Meal m, boolean addToDatabase) {
+        boolean b = super.add(m);
+        if (addToDatabase) {
+            dr.addToDatabase(m);
+        }
+        return b;
+    }
+
     @Override
     public boolean remove (Object o) {
         boolean b = super.remove(o);

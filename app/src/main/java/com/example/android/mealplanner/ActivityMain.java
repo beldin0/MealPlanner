@@ -22,12 +22,10 @@ public class ActivityMain extends AppCompatActivity {
 
         ingredientList = ArrayFiller.getIngredients();
 
-        mealList = new MealList();
-        ArrayFiller.getMeals();
+        mealList = ArrayFiller.getMeals();
         Collections.sort(mealList);
 
         week = Day.makeWeek();
-        mealList = ArrayFiller.getMeals();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

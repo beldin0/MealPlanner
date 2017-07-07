@@ -34,6 +34,19 @@ public final class SqlSchema {
                 MealsTable.COLUMN_TYPE + " TEXT)";
     }
 
+    public static String SQL_DELETE_MEAL_INGREDIENTS_TABLE() {
+        return "DROP TABLE IF EXISTS " + MealIngredientsTable.TABLE_NAME;
+    }
+
+    public static String SQL_CREATE_MEAL_INGREDIENTS_TABLE() {
+        return "CREATE TABLE " + MealIngredientsTable.TABLE_NAME + " (" +
+                MealIngredientsTable._ID + " INTEGER PRIMARY KEY," +
+                MealIngredientsTable.COLUMN_MEAL_NAME + " TEXT," +
+                MealIngredientsTable.COLUMN_INGREDIENT + " TEXT," +
+                MealIngredientsTable.COLUMN_AMOUNT + " INTEGER," +
+                MealIngredientsTable.COLUMN_UNIT + " TEXT)";
+    }
+
     public static String SQL_DELETE_MEALS_TABLE() {
         return "DROP TABLE IF EXISTS " + MealsTable.TABLE_NAME;
     }
@@ -64,16 +77,33 @@ public final class SqlSchema {
                 meal.getType() + "\");";
     }
 
+    public static String sqlAddMealIngredient(Ingredient ingredient, Quantity quantity) {
+        return "INSERT INTO " + MealIngredientsTable.TABLE_NAME + " (" +
+                MealIngredientsTable.COLUMN_INGREDIENT + "," +
+                MealIngredientsTable.COLUMN_AMOUNT + "," +
+                MealIngredientsTable.COLUMN_UNIT + ") " +
+                "VALUES (\"" +
+                ingredient.toString() + "\"," +
+                quantity.getAmount() + ",\"" +
+                quantity.getUnitOnly() + "\");";
+    }
+
     public static String deleteMeal (Meal meal) {
         return "DELETE FROM "+ MealsTable.TABLE_NAME + " " +
-                "WHERE " + MealsTable.COLUMN_NAME + " = \"" +
-                meal.toString() + "\";";
+                "WHERE " + MealsTable.COLUMN_NAME +
+                " = \"" + meal.toString() + "\";";
+    }
+
+    public static String deleteMealIngredients (Meal meal) {
+        return "DELETE FROM "+ MealIngredientsTable.TABLE_NAME + " " +
+                "WHERE " + MealIngredientsTable.COLUMN_MEAL_NAME +
+                " = \"" + meal.toString() + "\";";
     }
 
     public static String deleteIngredient (Ingredient ingredient) {
         return "DELETE FROM " + IngredientsTable.TABLE_NAME + " " +
-                "WHERE " + IngredientsTable.COLUMN_NAME + " = \"" +
-                ingredient.toString() + "\";";
+                "WHERE " + IngredientsTable.COLUMN_NAME +
+                " = \"" + ingredient.toString() + "\";";
     }
 
     public static String getIngredients() {
@@ -90,6 +120,15 @@ public final class SqlSchema {
                 MealsTable.COLUMN_SLOW + "," +
                 MealsTable.COLUMN_TYPE + " " +
                 "FROM " + MealsTable.TABLE_NAME + ";";
+    }
+
+    public static String getMealIngredients(String meal) {
+        return "SELECT " + MealIngredientsTable.COLUMN_INGREDIENT + "," +
+                MealIngredientsTable.COLUMN_AMOUNT + "," +
+                MealIngredientsTable.COLUMN_UNIT + " " +
+                "FROM " + MealIngredientsTable.TABLE_NAME + " " +
+                "WHERE " + MealIngredientsTable.COLUMN_MEAL_NAME +
+                " = \"" + meal + "\";";
     }
 
     public static Ingredient parseIngredient(Cursor cursor) {
@@ -111,6 +150,14 @@ public final class SqlSchema {
         return meal;
     }
 
+    public static IngredientMap parseMealIngredient(Cursor cursor) {
+        IngredientMap tmp = new IngredientMap();
+        tmp.put(ActivityMain.ingredientList.get(cursor.getString(0)),
+                new Quantity(Integer.parseInt(cursor.getString(1)),
+                        cursor.getString(2)));
+        return tmp;
+    }
+
     public static class IngredientsTable implements BaseColumns {
         public static final String TABLE_NAME = "ingredients";
         public static final String COLUMN_NAME = "name";
@@ -125,5 +172,13 @@ public final class SqlSchema {
         public static final String COLUMN_PREP = "inadvance";
         public static final String COLUMN_SLOW = "slowcook";
         public static final String COLUMN_TYPE = "mealtype";
+    }
+
+    public static class MealIngredientsTable implements BaseColumns {
+        public static final String TABLE_NAME = "mealingredients";
+        public static final String COLUMN_MEAL_NAME = "meal";
+        public static final String COLUMN_INGREDIENT = "ingredient";
+        public static final String COLUMN_AMOUNT = "amount";
+        public static final String COLUMN_UNIT = "unit";
     }
 }
