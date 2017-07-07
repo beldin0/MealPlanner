@@ -1,6 +1,6 @@
 package com.example.android.mealplanner;
 
-import java.util.ArrayList;
+import static com.example.android.mealplanner.ActivityMain.dr;
 
 public class ArrayFiller {
 
@@ -8,27 +8,27 @@ public class ArrayFiller {
 
 		IngredientList tmp;
 
-		tmp = DataRetriever.queryIngredients();
+		tmp = dr.queryIngredients();
 		if (tmp.isEmpty()) {
-			tmp.put("Chicken", new Ingredient("Chicken", Ingredient.Location.CHILLED, false, true));
-			tmp.put("Potatoes", new Ingredient("Potatoes", Ingredient.Location.VEG, true, false));
-			tmp.put("Stuffing", new Ingredient("Stuffing", Ingredient.Location.CUPBOARD, false, false));
-			tmp.put("Carrots", new Ingredient("Carrots", Ingredient.Location.VEG, false, false));
-			tmp.put("Lasagne sheets", new Ingredient("Lasagne sheets", Ingredient.Location.CUPBOARD, true, false));
-			tmp.put("Smoked Mackerel", new Ingredient("Smoked Mackerel", Ingredient.Location.CHILLED, false, true));
-			tmp.put("Tinned Crabmeat", new Ingredient("Tinned Crabmeat", Ingredient.Location.CUPBOARD, false, true));
-			tmp.put("King Prawns", new Ingredient("King Prawns", Ingredient.Location.CHILLED, false, true));
-			tmp.put("Quorn mince", new Ingredient("Quorn mince", Ingredient.Location.FROZEN, false, true));
-			tmp.put("Salmon", new Ingredient("Salmon", Ingredient.Location.CHILLED, false, true));
+			tmp.put(new Ingredient("Chicken", Ingredient.Location.CHILLED, false, true));
+			tmp.put(new Ingredient("Potatoes", Ingredient.Location.VEG, true, false));
+			tmp.put(new Ingredient("Stuffing", Ingredient.Location.CUPBOARD, false, false));
+			tmp.put(new Ingredient("Carrots", Ingredient.Location.VEG, false, false));
+			tmp.put(new Ingredient("Lasagne sheets", Ingredient.Location.CUPBOARD, true, false));
+			tmp.put(new Ingredient("Smoked Mackerel", Ingredient.Location.CHILLED, false, true));
+			tmp.put(new Ingredient("Tinned Crabmeat", Ingredient.Location.CUPBOARD, false, true));
+			tmp.put(new Ingredient("King Prawns", Ingredient.Location.CHILLED, false, true));
+			tmp.put(new Ingredient("Quorn mince", Ingredient.Location.FROZEN, false, true));
+			tmp.put(new Ingredient("Salmon", Ingredient.Location.CHILLED, false, true));
 		}
 		return tmp;
 	}
 
-	public static ArrayList<Meal> getMeals() {
+	public static MealList getMeals() {
 
-		ArrayList<Meal> tmp;
+		MealList tmp;
 
-		tmp = DataRetriever.queryMeals();
+		tmp = dr.queryMeals();
 		if (tmp.isEmpty()) {
 
 			final String[] name = {"Roast Chicken",

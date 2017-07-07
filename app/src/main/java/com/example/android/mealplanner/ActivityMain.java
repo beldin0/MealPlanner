@@ -1,32 +1,28 @@
 package com.example.android.mealplanner;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class ActivityMain extends AppCompatActivity {
 
-    public static IngredientList ingredientList;
-    public static ArrayList<Meal> mealList;
-    public static Day[] week;
-    SQLiteDatabase db;
+    static IngredientList ingredientList;
+    static MealList mealList;
+    static Day[] week;
+    static DataManager dr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        DataRetriever dr = new DataRetriever(this);
-        db = dr.getReadableDatabase();
+        dr = new DataManager(this);
 
         ingredientList = ArrayFiller.getIngredients();
 
-        mealList = new ArrayList<>();
+        mealList = new MealList();
         ArrayFiller.getMeals();
         Collections.sort(mealList);
 

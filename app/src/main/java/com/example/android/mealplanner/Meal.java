@@ -93,7 +93,8 @@ public class Meal implements Comparable{
         return this.toString().compareTo(c.toString());
     }
 
-    public enum MealType {
+
+	public enum MealType {
 		CURRY("Curry"),
 		RISOTTO("Risotto"),
 		ROAST("Roast Dinner"),
@@ -113,6 +114,13 @@ public class Meal implements Comparable{
 			}
 			Arrays.sort(rtn);
 			return rtn;
+		}
+
+		public static MealType toValue(String mealType) {
+			for (MealType l : MealType.values()) {
+				if (l.toString().equals(mealType)) return l;
+			}
+			return null;
 		}
 		
 		public String toString() {

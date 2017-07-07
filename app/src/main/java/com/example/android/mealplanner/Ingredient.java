@@ -14,7 +14,7 @@ public class Ingredient implements Comparable {
 	private boolean protein = false;
 
 	public Ingredient(String name) {
-		this(name, false, false);
+		this(capitalizeFully(name), false, false);
 	}
 	
 	public Ingredient(String name, boolean carb, boolean protein) {
@@ -93,7 +93,7 @@ public class Ingredient implements Comparable {
             return Location.UNKNOWN;
         }
 
-public static String[] list() {
+		public static String[] list() {
 			String[] rtn = new String[Location.values().length];
 			int i = 0;
 			for (Location l : Location.values()) {

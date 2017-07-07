@@ -7,22 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 
 public class IngredientAdapter extends ArrayAdapter<String> {
 
-    private String[] mKeys;
-
     public IngredientAdapter (Activity context, IngredientList ingredients)
     {
-        super(context, 0, ingredients.keySet().toArray(new String[ingredients.size()]));
-        mKeys = ingredients.keySet().toArray(new String[ingredients.size()]);
-        Arrays.sort(mKeys);
+        super(context, 0, ingredients.list());
     }
 
     @NonNull
@@ -39,9 +30,8 @@ public class IngredientAdapter extends ArrayAdapter<String> {
             listItemView = convertView;
         }
 
-
         // Get the details of the current word from the words ArrayList
-        String currentIngredient = mKeys[position];
+        String currentIngredient = ActivityMain.ingredientList.list()[position];
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.text_view);
@@ -51,6 +41,6 @@ public class IngredientAdapter extends ArrayAdapter<String> {
     }
 
     public Ingredient getIngredient(int position) {
-        return ActivityMain.ingredientList.get(mKeys[position]);
+        return ActivityMain.ingredientList.getByNumber(position);
     }
 }
