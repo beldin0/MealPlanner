@@ -3,8 +3,6 @@ package com.example.android.mealplanner;
 import android.support.annotation.NonNull;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.apache.commons.lang3.text.WordUtils.capitalizeFully;
 
@@ -20,23 +18,18 @@ public class Ingredient implements Comparable {
 	}
 	
 	public Ingredient(String name, boolean carb, boolean protein) {
-		this(proper(name), Location.UNKNOWN, carb, protein);
+		this(capitalizeFully(name), Location.UNKNOWN, carb, protein);
 	}
 	
 	public Ingredient(String name, Location loc, boolean carb, boolean protein) {
-		this.name = proper(name);
+		this.name = capitalizeFully(name);
 		this.carb = carb;
 		this.protein = protein;
 		this.loc = loc;
 	}
 
-	public static void add(List<Ingredient> list, String name, Location loc, boolean carb, boolean protein) {
-        list.add(new Ingredient(proper(name), loc, carb, protein));
-        Collections.sort(list);
-    }
-
-	private static String proper (String name) {
-        return capitalizeFully(name);
+	public static void add(IngredientList list, String name, Location loc, boolean carb, boolean protein) {
+        list.put(capitalizeFully(name), new Ingredient(capitalizeFully(name), loc, carb, protein));
     }
 
 	public String getInfo() {
@@ -57,6 +50,15 @@ public class Ingredient implements Comparable {
 
 	public boolean isProtein() {
 		return protein;
+	}
+
+	public boolean isUsed() {
+		for (Meal m : ActivityMain.mealList) {
+			if (m.getIngredientsAsArray().contains(this)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
     @Override

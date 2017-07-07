@@ -7,15 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
-public class IngredientAdapter extends ArrayAdapter<Ingredient> {
+public class IngredientAdapter extends ArrayAdapter<String> {
 
-    public IngredientAdapter (Activity context, ArrayList<Ingredient> ingredients)
+    private String[] mKeys;
+
+    public IngredientAdapter (Activity context, IngredientList ingredients)
     {
-        super(context, 0, ingredients);
+        super(context, 0, ingredients.keySet().toArray(new String[ingredients.size()]));
+        mKeys = ingredients.keySet().toArray(new String[ingredients.size()]);
+        Arrays.sort(mKeys);
     }
 
     @NonNull
@@ -32,25 +39,18 @@ public class IngredientAdapter extends ArrayAdapter<Ingredient> {
             listItemView = convertView;
         }
 
-//        View layout = listItemView.findViewById(R.id.behind);
-//        int color = ContextCompat.getColor(getContext(), bg_color);
-//        layout.setBackgroundColor(color);
 
         // Get the details of the current word from the words ArrayList
-        final Ingredient currentIngredient = getItem(position);
+        String currentIngredient = mKeys[position];
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.text_view);
-        textView.setText(currentIngredient.toString());
-
-//        ImageView imageView = (ImageView) listItemView.findViewById(R.id.icon_image);
-//        if (currentWord.hasImage()) {
-//            imageView.setImageResource(currentWord.getImage_src());
-//            imageView.setVisibility(View.VISIBLE);
-//        } else {
-//            imageView.setVisibility(View.GONE);
-//        }
+        textView.setText(currentIngredient);
 
         return listItemView;
+    }
+
+    public Ingredient getIngredient(int position) {
+        return ActivityMain.ingredientList.get(mKeys[position]);
     }
 }

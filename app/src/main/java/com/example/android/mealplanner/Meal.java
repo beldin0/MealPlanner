@@ -2,6 +2,7 @@ package com.example.android.mealplanner;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Meal implements Comparable{
@@ -17,9 +18,20 @@ public class Meal implements Comparable{
 		this.name = name;
 		ingredients = new IngredientMap();
 	}
-	
-	public IngredientMap getIngredients() {
-		return ingredients;
+
+	public IngredientMap getIngredients() {return ingredients;}
+
+	public IngredientList getPossibleIngredients() {
+		IngredientList tmpList = ActivityMain.ingredientList;
+		for (Ingredient i : ingredients.keySet()) {
+			tmpList.remove(i);
+		}
+		return tmpList;
+	}
+
+	public ArrayList<Ingredient> getIngredientsAsArray()
+	{
+		return new ArrayList<Ingredient>(ingredients.keySet());
 	}
 
 	public void add(Ingredient ingredient, Quantity amount) {
