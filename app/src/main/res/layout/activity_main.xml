@@ -22,4 +22,11 @@
         style="@style/MenuStyle"
         android:text="Ingredients" />
 
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset database"
+        />
+
 </LinearLayout>

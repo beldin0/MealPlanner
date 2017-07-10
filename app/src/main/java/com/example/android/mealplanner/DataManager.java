@@ -81,8 +81,8 @@ public class DataManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(SqlSchema.sqlAddMeal(meal));
         for (Ingredient ingredient : meal.getIngredients().keySet()) {
-            db.execSQL(SqlSchema.sqlAddMealIngredient(
-                    ingredient,meal.getQuantity(ingredient)));
+            Log.d("addToDatabase:", "" + meal.toString() + "(" + ingredient.toString() + ")");
+            db.execSQL(SqlSchema.sqlAddMealIngredient(meal, ingredient, meal.getQuantity(ingredient)));
         }
     }
 
@@ -123,7 +123,14 @@ public class DataManager extends SQLiteOpenHelper{
 //        for (int i=0; i< tmpMealList.size(); i++) {
 //            addToDatabase(tmpMealList.get(i));
 //        }
+    }
 
+    public void reset() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(SqlSchema.SQL_DELETE_INGREDIENTS_TABLE());
+        db.execSQL(SqlSchema.SQL_DELETE_MEALS_TABLE());
+        db.execSQL(SqlSchema.SQL_DELETE_MEAL_INGREDIENTS_TABLE());
+        onCreate(db);
     }
 
 

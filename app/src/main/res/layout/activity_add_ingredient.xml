@@ -46,7 +46,8 @@
             style="@style/MenuStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location" >
+            android:background="@android:drawable/btn_dropdown"
+            android:text="Location">
         </Spinner>
 
     </LinearLayout>
@@ -78,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Add this ingredient"
-        >
+        tools:background="@android:drawable/btn_default">
 
     </Button>
 </LinearLayout>

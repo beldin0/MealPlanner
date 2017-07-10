@@ -2,6 +2,7 @@ package com.example.android.mealplanner;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -60,7 +61,8 @@ public class ActivityMeals extends AppCompatActivity {
         btn.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ActivityMeals.this, "NOT YET IMPLEMENTED", Toast.LENGTH_SHORT).show();
+                Intent planIntent = new Intent(ActivityMeals.this, ActivityAddMeal.class);
+                startActivity(planIntent);
             }
         });
     }

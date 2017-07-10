@@ -1,7 +1,8 @@
 package com.example.android.mealplanner;
 
+import java.util.Collections;
+
 import static com.example.android.mealplanner.ActivityMain.dr;
-import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 public class ArrayFiller {
 
@@ -57,11 +58,12 @@ public class ArrayFiller {
 				Meal tmpMeal = new Meal(name[s]);
 					for (String iArray : tmpIngredients[s]) {
 						String[] i = iArray.split(":",-1);
-						tmpMeal.add(ActivityMain.ingredientList.get(capitalizeFully(i[0])),new Quantity(Integer.parseInt(i[1]), "" + i[2]));
+						tmpMeal.add(ActivityMain.ingredientList.get(i[0]), new Quantity(Integer.parseInt(i[1]), "" + i[2]));
 					}
-				tmp.add(tmpMeal);
+				tmp.add(tmpMeal, true);
 			}
 		}
+		Collections.sort(tmp);
 		return tmp;
 	}
 	

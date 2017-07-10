@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.example.android.mealplanner.ActivityMain.dr;
+import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 /**
  * Created by beldi on 03/07/2017.
@@ -11,10 +12,15 @@ import static com.example.android.mealplanner.ActivityMain.dr;
 
 public class IngredientList extends HashMap<String, Ingredient> {
 
+    public Ingredient get(String s) {
+        return super.get(capitalizeFully(s));
+    }
+
     public void remove(Ingredient ingredient) {
         this.remove (ingredient.toString());
         dr.delete(ingredient);
     }
+
 
     public Ingredient put (Ingredient ingredient) {
         Ingredient r = super.put(ingredient.toString(), ingredient);

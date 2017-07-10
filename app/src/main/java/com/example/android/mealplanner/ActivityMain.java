@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Collections;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -21,9 +20,7 @@ public class ActivityMain extends AppCompatActivity {
         dr = new DataManager(this);
 
         ingredientList = ArrayFiller.getIngredients();
-
         mealList = ArrayFiller.getMeals();
-        Collections.sort(mealList);
 
         week = Day.makeWeek();
 
@@ -50,6 +47,16 @@ public class ActivityMain extends AppCompatActivity {
                 Intent mealsIntent = new Intent(ActivityMain.this, ActivityMeals.class);
                 startActivity(mealsIntent);
             }});
+
+        Button resetBtn = (Button) findViewById(R.id.reset);
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dr.reset();
+                ingredientList = ArrayFiller.getIngredients();
+                mealList = ArrayFiller.getMeals();
+            }
+        });
 
 
     }

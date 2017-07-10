@@ -2,6 +2,9 @@ package com.example.android.mealplanner;
 
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import static com.example.android.mealplanner.SqlSchema.MealIngredientsTable.COLUMN_INGREDIENT;
 
 /**
  * Created by Jim on 05/07/2017.
@@ -42,7 +45,7 @@ public final class SqlSchema {
         return "CREATE TABLE " + MealIngredientsTable.TABLE_NAME + " (" +
                 MealIngredientsTable._ID + " INTEGER PRIMARY KEY," +
                 MealIngredientsTable.COLUMN_MEAL_NAME + " TEXT," +
-                MealIngredientsTable.COLUMN_INGREDIENT + " TEXT," +
+                COLUMN_INGREDIENT + " TEXT," +
                 MealIngredientsTable.COLUMN_AMOUNT + " INTEGER," +
                 MealIngredientsTable.COLUMN_UNIT + " TEXT)";
     }
@@ -77,12 +80,14 @@ public final class SqlSchema {
                 meal.getType() + "\");";
     }
 
-    public static String sqlAddMealIngredient(Ingredient ingredient, Quantity quantity) {
+    public static String sqlAddMealIngredient(Meal meal, Ingredient ingredient, Quantity quantity) {
         return "INSERT INTO " + MealIngredientsTable.TABLE_NAME + " (" +
+                MealIngredientsTable.COLUMN_MEAL_NAME + "," +
                 MealIngredientsTable.COLUMN_INGREDIENT + "," +
                 MealIngredientsTable.COLUMN_AMOUNT + "," +
                 MealIngredientsTable.COLUMN_UNIT + ") " +
                 "VALUES (\"" +
+                meal.toString() + "\",\"" +
                 ingredient.toString() + "\"," +
                 quantity.getAmount() + ",\"" +
                 quantity.getUnitOnly() + "\");";
@@ -123,9 +128,11 @@ public final class SqlSchema {
     }
 
     public static String getMealIngredients(String meal) {
-        return "SELECT " + MealIngredientsTable.COLUMN_INGREDIENT + "," +
+        return "SELECT " +
+                MealIngredientsTable.COLUMN_INGREDIENT + "," +
                 MealIngredientsTable.COLUMN_AMOUNT + "," +
-                MealIngredientsTable.COLUMN_UNIT + " " +
+                MealIngredientsTable.COLUMN_UNIT + "," +
+                MealIngredientsTable.COLUMN_MEAL_NAME + " " +
                 "FROM " + MealIngredientsTable.TABLE_NAME + " " +
                 "WHERE " + MealIngredientsTable.COLUMN_MEAL_NAME +
                 " = \"" + meal + "\";";
@@ -152,8 +159,13 @@ public final class SqlSchema {
 
     public static IngredientMap parseMealIngredient(Cursor cursor) {
         IngredientMap tmp = new IngredientMap();
+        String tmpstring = "(";
+        for (int i = 0; i < cursor.getColumnCount(); i++) {
+            tmpstring += cursor.getString(i);
+        }
+        Log.d("parseMealIngredient", tmpstring + ")");
         tmp.put(ActivityMain.ingredientList.get(cursor.getString(0)),
-                new Quantity(Integer.parseInt(cursor.getString(1)),
+                new Quantity(cursor.getInt(1),
                         cursor.getString(2)));
         return tmp;
     }

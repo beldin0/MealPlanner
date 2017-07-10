@@ -9,7 +9,7 @@ public class Meal implements Comparable{
 	
 	private String name;
 	private IngredientMap ingredients;
-	private MealType type;
+	private MealType type = MealType.NONE;
 	private int cookTime;
 	private boolean inAdvance = false;
 
@@ -66,8 +66,8 @@ public class Meal implements Comparable{
 	}
 
     public String getInfo() {
-        return name;
-    }
+		return String.format("Ingredients:%d", ingredients.size());
+	}
 
 	public MealType getType() {
 		return type;
@@ -103,6 +103,7 @@ public class Meal implements Comparable{
 
 
 	public enum MealType {
+		NONE(""),
 		CURRY("Curry"),
 		RISOTTO("Risotto"),
 		ROAST("Roast Dinner"),

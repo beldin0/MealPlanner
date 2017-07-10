@@ -41,4 +41,19 @@ public class IngredientMap extends HashMap<Ingredient, Quantity> {
         }
         return null;
     }
+
+    public String getAll() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Ingredient, Quantity> entry : this.entrySet()) {
+            sb.append(entry.getKey().toString());
+        }
+        return sb.toString();
+    }
+
+
+    public void removeAll(IngredientList iList) {
+        for (Entry<String, Ingredient> entry : iList.entrySet()) {
+            this.remove(entry.getKey());
+        }
+    }
 }

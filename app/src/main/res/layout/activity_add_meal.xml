@@ -16,19 +16,30 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredient:" >
+            android:text="Meal:">
         </TextView>
 
         <EditText
             android:id="@+id/editText"
             style="@style/MenuStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            <requestFocus />
+            android:layout_height="wrap_content">
+
+            <requestFocus/>
         </EditText>
 
     </LinearLayout>
 
+
+    <CheckBox
+        android:id="@+id/checkbox_carb"
+        style="@style/MenuStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:text="This can be cooked in advance"
+        >
+    </CheckBox>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,47 +49,63 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location:" >
-        </TextView>
+            android:text="Meal Type"
+            />
 
         <Spinner
-            android:id="@+id/location_spinner"
+            android:id="@+id/mealtype_spinner"
             style="@style/MenuStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location" >
+            android:text="Location"
+            tools:background="@android:drawable/btn_dropdown">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/add_new_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add this ingredient"
+            tools:background="@android:drawable/btn_default">
+
+        </Button>
+
+        <Spinner
+            android:id="@+id/ingredient_spinner"
+            style="@style/MenuStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            tools:background="@android:drawable/btn_dropdown">
         </Spinner>
 
     </LinearLayout>
 
 
-    <CheckBox
-        android:id="@+id/checkbox_protein"
-        style="@style/MenuStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:text="This ingredient contains protein"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/list"
+              android:layout_width="match_parent"
+              android:layout_height="300dp"
+              android:orientation="vertical"
         >
-    </CheckBox>
-
-    <CheckBox
-        android:id="@+id/checkbox_carb"
-        style="@style/MenuStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:text="This ingredient contains carbs"
-        >
-    </CheckBox>
+    </ListView>
 
     <Button
-        android:id="@+id/submit_new_ingredient"
+        android:id="@+id/addbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Add this ingredient"
-        >
+        android:text="Add meal"
+        tools:background="@android:drawable/btn_default">
 
     </Button>
+
 </LinearLayout>
