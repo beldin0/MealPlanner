@@ -21,7 +21,6 @@ public class IngredientList extends HashMap<String, Ingredient> {
         dr.delete(ingredient);
     }
 
-
     public Ingredient put (Ingredient ingredient) {
         Ingredient r = super.put(ingredient.toString(), ingredient);
         dr.addToDatabase(ingredient);
@@ -49,6 +48,18 @@ public class IngredientList extends HashMap<String, Ingredient> {
 
     public Ingredient getByNumber (int i) {
         return this.get(this.list()[i]);
+    }
+
+    public void removeAll(IngredientList iList) {
+        for (Entry<String, Ingredient> entry : iList.entrySet()) {
+            this.remove(entry.getKey());
+        }
+    }
+
+    public void removeAll(IngredientMap iMap) {
+        for (Entry<Ingredient, Quantity> entry : iMap.entrySet()) {
+            this.remove(entry.getKey().toString());
+        }
     }
 }
 

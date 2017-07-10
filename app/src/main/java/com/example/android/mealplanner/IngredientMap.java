@@ -51,9 +51,4 @@ public class IngredientMap extends HashMap<Ingredient, Quantity> {
     }
 
 
-    public void removeAll(IngredientList iList) {
-        for (Entry<String, Ingredient> entry : iList.entrySet()) {
-            this.remove(entry.getKey());
-        }
-    }
 }
