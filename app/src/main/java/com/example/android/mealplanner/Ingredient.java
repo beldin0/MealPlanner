@@ -54,8 +54,8 @@ public class Ingredient implements Comparable {
 	}
 
 	public boolean isUsed() {
-		for (Meal m : ActivityMain.mealList) {
-			if (m.getIngredientsAsArray().contains(this)) {
+        for (Meal m : MealList.getMasterList()) {
+            if (m.getIngredientsAsArray().contains(this)) {
 				return true;
 			}
 		}

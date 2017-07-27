@@ -32,24 +32,12 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             listItemView = convertView;
         }
 
-//        View layout = listItemView.findViewById(R.id.behind);
-//        int color = ContextCompat.getColor(getContext(), bg_color);
-//        layout.setBackgroundColor(color);
-
         // Get the details of the current word from the words ArrayList
         final Meal currentMeal = getItem(position);
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.text_view);
         textView.setText(currentMeal.toString());
-
-//        ImageView imageView = (ImageView) listItemView.findViewById(R.id.icon_image);
-//        if (currentWord.hasImage()) {
-//            imageView.setImageResource(currentWord.getImage_src());
-//            imageView.setVisibility(View.VISIBLE);
-//        } else {
-//            imageView.setVisibility(View.GONE);
-//        }
 
         return listItemView;
     }

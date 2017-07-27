@@ -21,14 +21,6 @@ public class Meal implements Comparable{
 
 	public IngredientMap getIngredients() {return ingredients;}
 
-	public IngredientList getPossibleIngredients() {
-		IngredientList tmpList = ActivityMain.ingredientList;
-		for (Ingredient i : ingredients.keySet()) {
-			tmpList.remove(i);
-		}
-		return tmpList;
-	}
-
 	public Quantity getQuantity(Ingredient i) {
 		return ingredients.get(i);
 	}
@@ -91,8 +83,8 @@ public class Meal implements Comparable{
 		return inAdvance;
 	}
 
-	public void setInAdvance(boolean inAdvance) {
-		this.inAdvance = inAdvance;
+    public void inAdvance(boolean inAdvance) {
+        this.inAdvance = inAdvance;
 	}
 
 	@Override

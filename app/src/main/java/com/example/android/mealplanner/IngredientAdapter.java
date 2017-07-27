@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class IngredientAdapter extends ArrayAdapter<String> {
+import java.util.ArrayList;
 
-    public IngredientAdapter (Activity context, IngredientList ingredients)
+public class IngredientAdapter extends ArrayAdapter<Ingredient> {
+
+    public IngredientAdapter(Activity context, ArrayList<Ingredient> ingredients)
     {
-        super(context, 0, ingredients.list());
+        super(context, 0, ingredients);
     }
 
     @NonNull
@@ -31,16 +33,12 @@ public class IngredientAdapter extends ArrayAdapter<String> {
         }
 
         // Get the details of the current word from the words ArrayList
-        String currentIngredient = ActivityMain.ingredientList.list()[position];
+        final Ingredient currentIngredient = getItem(position);
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.text_view);
-        textView.setText(currentIngredient);
+        textView.setText(currentIngredient.toString());
 
         return listItemView;
-    }
-
-    public Ingredient getIngredient(int position) {
-        return ActivityMain.ingredientList.getByNumber(position);
     }
 }

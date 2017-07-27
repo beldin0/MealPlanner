@@ -1,5 +1,6 @@
 package com.example.android.mealplanner;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,5 +51,13 @@ public class IngredientMap extends HashMap<Ingredient, Quantity> {
         return sb.toString();
     }
 
-
+    public String[] list() {
+        String[] a = new String[this.keySet().size()];
+        int c = 0;
+        for (Ingredient i : this.keySet()) {
+            a[c++] = i.toString();
+        }
+        Arrays.sort(a);
+        return a;
+    }
 }

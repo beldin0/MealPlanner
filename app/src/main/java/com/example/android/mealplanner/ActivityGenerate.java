@@ -9,20 +9,18 @@ import android.widget.ListView;
 
 public class ActivityGenerate extends AppCompatActivity {
     private MealSelector ms;
+    private boolean already = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ms = new MealSelector();
-        for (Day d : ActivityMain.week) {
-            d.setMeal(ms.get());
-        }
+        generate();
         prepare();
     }
 
     private void prepare() {
         setContentView(R.layout.list_main);
-        DayAdapter adapter = new DayAdapter(this, ActivityMain.week);
+        DayAdapter adapter = new DayAdapter(this, Day.getMasterWeek());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -35,11 +33,35 @@ public class ActivityGenerate extends AppCompatActivity {
                 startActivity(planIntent);
             }
         });
+
+        Button btn1 = (Button) findViewById(R.id.button_retry);
+        btn1.setVisibility(View.VISIBLE);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                already = false;
+                generate();
+                onRestart();
+            }
+        });
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         prepare();
+    }
+
+    private void generate() {
+        if (Day.getMasterWeek()[0].getMeal() == null) {
+            already = false;
+        }
+        if (!already) {
+            ms = new MealSelector();
+            for (Day d : Day.getMasterWeek()) {
+                d.setMeal(ms.get());
+            }
+            already = true;
+        }
     }
 }

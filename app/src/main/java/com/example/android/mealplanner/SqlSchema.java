@@ -152,7 +152,7 @@ public final class SqlSchema {
         Meal meal = new Meal(
                 cursor.getString(0));
         meal.setType(Meal.MealType.toValue(cursor.getString(1)));
-        meal.setInAdvance(Boolean.parseBoolean(cursor.getString(2)));
+        meal.inAdvance(Boolean.parseBoolean(cursor.getString(2)));
         // meal.setSlowCook(Boolean.parseBoolean(cursor.getString(3)));
         return meal;
     }
@@ -164,7 +164,7 @@ public final class SqlSchema {
             tmpstring += cursor.getString(i);
         }
         Log.d("parseMealIngredient", tmpstring + ")");
-        tmp.put(ActivityMain.ingredientList.get(cursor.getString(0)),
+        tmp.put(IngredientList.getMasterList().get(cursor.getString(0)),
                 new Quantity(cursor.getInt(1),
                         cursor.getString(2)));
         return tmp;

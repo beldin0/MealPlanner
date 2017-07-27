@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static IngredientList ingredientList;
-    static MealList mealList;
-    static Day[] week;
     static DataManager dr;
 
     @Override
@@ -19,10 +16,9 @@ public class ActivityMain extends AppCompatActivity {
 
         dr = new DataManager(this);
 
-        ingredientList = ArrayFiller.getIngredients();
-        mealList = ArrayFiller.getMeals();
+        IngredientList.getMasterList().putAll(ArrayFiller.getIngredients());
 
-        week = Day.makeWeek();
+        MealList.getMasterList().addAll(ArrayFiller.getMeals());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,8 +49,8 @@ public class ActivityMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dr.reset();
-                ingredientList = ArrayFiller.getIngredients();
-                mealList = ArrayFiller.getMeals();
+                IngredientList.getMasterList().putAll(ArrayFiller.getIngredients());
+                MealList.getMasterList().addAll(ArrayFiller.getMeals());
             }
         });
 

@@ -58,8 +58,8 @@ public class ArrayFiller {
 				Meal tmpMeal = new Meal(name[s]);
 					for (String iArray : tmpIngredients[s]) {
 						String[] i = iArray.split(":",-1);
-						tmpMeal.add(ActivityMain.ingredientList.get(i[0]), new Quantity(Integer.parseInt(i[1]), "" + i[2]));
-					}
+                        tmpMeal.add(IngredientList.getMasterList().get(i[0]), new Quantity(Integer.parseInt(i[1]), "" + i[2]));
+                    }
 				tmp.add(tmpMeal, true);
 			}
 		}

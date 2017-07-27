@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MealSelector {
 
-    ArrayList<Meal> meals;
+    private ArrayList<Meal> meals;
 
     public MealSelector () {
         meals = new ArrayList<Meal>(ArrayFiller.getMeals());

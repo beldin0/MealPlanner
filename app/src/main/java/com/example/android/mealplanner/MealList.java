@@ -1,6 +1,7 @@
 package com.example.android.mealplanner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.android.mealplanner.ActivityMain.dr;
 
@@ -9,6 +10,16 @@ import static com.example.android.mealplanner.ActivityMain.dr;
  */
 
 public class MealList extends ArrayList<Meal> {
+
+    private static MealList master = null;
+
+    public static MealList getMasterList() {
+        if (master == null) {
+            master = new MealList();
+        }
+        Collections.sort(master);
+        return master;
+    }
 
     @Override
     public boolean add (Meal m) {

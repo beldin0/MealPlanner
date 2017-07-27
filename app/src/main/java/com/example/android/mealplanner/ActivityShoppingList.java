@@ -14,7 +14,7 @@ public class ActivityShoppingList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_main);
-        sl.generate(ActivityMain.week);
+        sl.generate(Day.getMasterWeek());
 
         ShoppingListAdapter adapter = new ShoppingListAdapter(sl);
         ListView listView = (ListView) findViewById(R.id.list);

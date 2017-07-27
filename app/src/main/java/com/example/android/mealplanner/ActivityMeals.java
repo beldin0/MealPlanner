@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 public class ActivityMeals extends AppCompatActivity {
 
-    public static Meal clickedMeal;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,14 +21,14 @@ public class ActivityMeals extends AppCompatActivity {
 
     private void prepare() {
         setContentView(R.layout.list_main);
-        final MealAdapter adapter = new MealAdapter(this, ActivityMain.mealList);
+        MealAdapter adapter = new MealAdapter(this, MealList.getMasterList());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                clickedMeal = ActivityMain.mealList.get(position);
+                Meal clickedMeal = MealList.getMasterList().get(position);
                 Toast.makeText(ActivityMeals.this, clickedMeal.getInfo(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -38,13 +36,13 @@ public class ActivityMeals extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                clickedMeal = adapter.getItem(position);
+                final Meal clickedMeal = (Meal) parent.getItemAtPosition(position);
 
                 new AlertDialog.Builder(view.getContext())
                         .setMessage(String.format("Delete %s?", clickedMeal.toString()))
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                    ActivityMain.mealList.remove(clickedMeal);
+                                MealList.getMasterList().remove(clickedMeal);
                                     refresh();
                             }
                         })

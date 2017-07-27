@@ -41,7 +41,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Ingredient.add(
-                        ActivityMain.ingredientList,
+                        IngredientList.getMasterList(),
                         ((EditText)findViewById(R.id.editText)).getText().toString(),
                         Ingredient.Location.toValue(((Spinner)findViewById(R.id.location_spinner)).getSelectedItem().toString()),
                         ((CheckBox)findViewById(R.id.checkbox_carb)).isChecked(),
