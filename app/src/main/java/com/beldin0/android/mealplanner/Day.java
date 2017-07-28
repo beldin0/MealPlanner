@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 class Day {
 

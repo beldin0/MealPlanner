@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 /**
  * Created by beldi on 03/07/2017.

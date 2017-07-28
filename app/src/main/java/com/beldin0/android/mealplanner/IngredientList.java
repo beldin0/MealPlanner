@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.support.annotation.NonNull;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static com.example.android.mealplanner.ActivityMain.dr;
+import static com.beldin0.android.mealplanner.ActivityMain.dr;
 import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 /**

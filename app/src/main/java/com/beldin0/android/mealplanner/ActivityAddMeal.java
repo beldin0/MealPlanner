@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,19 +16,31 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.android.mealplanner.R;
+
 public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
     private final IngredientMap tmpMealIngredients = new IngredientMap();
     private final IngredientList tmpSpinner = new IngredientList();
     private Spinner mealTypeSpinner;
+    private Meal incomingMeal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meal);
         mealTypeSpinner = ((Spinner) findViewById(R.id.mealtype_spinner));
-        mealTypeSpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_item, Meal.MealType.list()));
+        ArrayAdapter mtSpinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Meal.MealType.list());
+        mealTypeSpinner.setAdapter(mtSpinnerAdapter);
         tmpSpinner.putAll(IngredientList.getMasterList());
+        if (ObjectBinder.hasObj()) {
+            incomingMeal = (Meal) ObjectBinder.getObj();
+            mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType()));
+            tmpMealIngredients.putAll(incomingMeal.getIngredients());
+            ((CheckBox) findViewById(R.id.checkbox_advance)).setChecked(incomingMeal.inAdvance());
+            ((EditText) findViewById(R.id.editText)).setText(incomingMeal.toString());
+            ObjectBinder.clear();
+        }
         prepare();
     }
 
@@ -89,6 +101,9 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
                     m.setType(Meal.MealType.toValue((String) mealTypeSpinner.getSelectedItem()));
                     if (((CheckBox) findViewById(R.id.checkbox_advance)).isChecked()) {
                         m.inAdvance(true);
+                    }
+                    if (!(incomingMeal == null)) {
+                        MealList.getMasterList().remove(incomingMeal);
                     }
                     MealList.getMasterList().add(m);
                 }

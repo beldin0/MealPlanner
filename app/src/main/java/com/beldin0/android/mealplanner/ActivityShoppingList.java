@@ -1,10 +1,12 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.example.android.mealplanner.R;
 
 public class ActivityShoppingList extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.android.mealplanner.R;
 
 public class DayAdapter extends ArrayAdapter<Day> {
 

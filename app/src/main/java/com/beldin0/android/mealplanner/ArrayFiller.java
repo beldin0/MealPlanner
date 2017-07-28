@@ -1,13 +1,19 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import java.util.Collections;
 
-import static com.example.android.mealplanner.ActivityMain.dr;
+import static com.beldin0.android.mealplanner.ActivityMain.dr;
 
 public class ArrayFiller {
 
 	public static IngredientList getIngredients() {
+		/**
+		 * Queries the database for ingredients.
+		 * If none found, populates a basic list
+		 *
+		 * @return an IngredientList
 
+		 */
 		IngredientList tmp;
 
 		tmp = dr.queryIngredients();
@@ -27,6 +33,13 @@ public class ArrayFiller {
 	}
 
 	public static MealList getMeals() {
+		/**
+		 * Queries the database for meals.
+		 * If none found, populates a basic list
+		 *
+		 * @return a MealList
+
+		 */
 
 		MealList tmp;
 
@@ -44,13 +57,13 @@ public class ArrayFiller {
 			};
 
 			final String[][] tmpIngredients = {
-					{"Chicken:1:whole", "Potatoes:200:g", "Stuffing:50:g", "Carrots:200:g"},
+					{"Chicken:1:", "Potatoes:200:g", "Stuffing:50:g", "Carrots:200:g"},
 					{"Lasagne sheets:200:g"},
 					{"Smoked Mackerel:100:g"},
 					{"Tinned Crabmeat:200:g"},
 					{"King Prawns:150:g"},
 					{"Quorn mince:250:g"},
-					{"Chicken:4:thighs"},
+					{"Chicken Pieces:4:"},
 					{"Salmon:2:pieces"}
 			};
 

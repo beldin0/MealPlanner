@@ -9,19 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityMain">
+        <activity android:name="com.beldin0.android.mealplanner.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityIngredients"/>
-        <activity android:name=".ActivityAddIngredient"/>
-        <activity android:name=".ActivityMeals"/>
-        <activity android:name=".ActivityGenerate"/>
-        <activity android:name=".ActivityShoppingList"/>
-        <activity android:name=".ActivityAddMeal">
+        <activity android:name="com.beldin0.android.mealplanner.ActivityIngredients"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityAddIngredient"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityMeals"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityGenerate"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityShoppingList"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityAddMeal">
         </activity>
     </application>
 

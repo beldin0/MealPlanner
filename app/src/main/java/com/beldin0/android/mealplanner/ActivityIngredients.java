@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.android.mealplanner.R;
 
 public class ActivityIngredients extends AppCompatActivity {
 

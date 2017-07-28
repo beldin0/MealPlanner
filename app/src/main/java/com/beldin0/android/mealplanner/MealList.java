@@ -1,9 +1,9 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.example.android.mealplanner.ActivityMain.dr;
+import static com.beldin0.android.mealplanner.ActivityMain.dr;
 
 /**
  * Created by beldi on 07/07/2017.
@@ -23,12 +23,13 @@ public class MealList extends ArrayList<Meal> {
 
     @Override
     public boolean add (Meal m) {
-        boolean b = super.add(m);
-        dr.addToDatabase(m);
-        return b;
+        return this.add(m, true);
     }
 
     public boolean add (Meal m, boolean addToDatabase) {
+        if (this.contains(m)) {
+            this.remove(m);
+        }
         boolean b = super.add(m);
         if (addToDatabase) {
             dr.addToDatabase(m);
@@ -41,5 +42,12 @@ public class MealList extends ArrayList<Meal> {
         boolean b = super.remove(o);
         dr.delete((Meal)o);
         return b;
+    }
+
+    public boolean contains(Meal m) {
+        for (Meal meal : master) {
+            if (meal.toString().equals(m.toString())) return true;
+        }
+        return false;
     }
 }

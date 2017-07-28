@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -9,13 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.android.mealplanner.R;
+
 import java.util.ArrayList;
 
-public class IngredientAdapter extends ArrayAdapter<Ingredient> {
+public class MealAdapter extends ArrayAdapter<Meal> {
 
-    public IngredientAdapter(Activity context, ArrayList<Ingredient> ingredients)
+    public MealAdapter(Activity context, ArrayList<Meal> meals)
     {
-        super(context, 0, ingredients);
+        super(context, 0, meals);
     }
 
     @NonNull
@@ -33,11 +35,11 @@ public class IngredientAdapter extends ArrayAdapter<Ingredient> {
         }
 
         // Get the details of the current word from the words ArrayList
-        final Ingredient currentIngredient = getItem(position);
+        final Meal currentMeal = getItem(position);
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.text_view);
-        textView.setText(currentIngredient.toString());
+        textView.setText(currentMeal.toString());
 
         return listItemView;
     }

@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;

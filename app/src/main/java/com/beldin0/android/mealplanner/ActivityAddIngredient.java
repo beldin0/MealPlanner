@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.android.mealplanner.R;
 
 public class ActivityAddIngredient extends AppCompatActivity {
 

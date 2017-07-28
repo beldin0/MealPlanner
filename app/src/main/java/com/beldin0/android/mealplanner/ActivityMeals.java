@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.example.android.mealplanner.R;
 
 public class ActivityMeals extends AppCompatActivity {
 
@@ -28,8 +29,10 @@ public class ActivityMeals extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Meal clickedMeal = MealList.getMasterList().get(position);
-                Toast.makeText(ActivityMeals.this, clickedMeal.getInfo(), Toast.LENGTH_SHORT).show();
+                Meal clickedMeal = (Meal) adapterView.getItemAtPosition(position);
+                ObjectBinder.setObj(clickedMeal);
+                Intent mealsIntent = new Intent(ActivityMeals.this, ActivityAddMeal.class);
+                startActivity(mealsIntent);
             }
         });
 

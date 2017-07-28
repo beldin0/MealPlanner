@@ -1,4 +1,4 @@
-package com.example.android.mealplanner;
+package com.beldin0.android.mealplanner;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,10 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.example.android.mealplanner.SqlSchema.*;
-
 /**
- * Created by beldi on 03/07/2017.
+ * Handles passing SQL queries and parsing and returning results
  */
 
 public class DataManager extends SQLiteOpenHelper{
@@ -21,6 +19,9 @@ public class DataManager extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Sends the
+     */
     public IngredientList queryIngredients () {
         IngredientList tmp = new IngredientList();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -30,7 +31,7 @@ public class DataManager extends SQLiteOpenHelper{
 
         if (cursor.moveToFirst()) {
             do {
-                tmp.put(parseIngredient(cursor), false);
+                tmp.put(SqlSchema.parseIngredient(cursor), false);
             } while (cursor.moveToNext());
         }
 
@@ -48,7 +49,7 @@ public class DataManager extends SQLiteOpenHelper{
 
         if (cursor.moveToFirst()) {
             do {
-                Meal meal = parseMeal(cursor);
+                Meal meal = SqlSchema.parseMeal(cursor);
                 meal.add(queryMealIngredients(meal.toString()));
                 tmp.add(meal, false);
             } while (cursor.moveToNext());
@@ -65,7 +66,7 @@ public class DataManager extends SQLiteOpenHelper{
 
         if (cursor.moveToFirst()) {
             do {
-                IngredientMap mealIngredient = parseMealIngredient(cursor);
+                IngredientMap mealIngredient = SqlSchema.parseMealIngredient(cursor);
                 tmpMap.putAll(mealIngredient);
             } while (cursor.moveToNext());
         }
