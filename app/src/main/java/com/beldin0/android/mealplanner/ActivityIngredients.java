@@ -31,7 +31,9 @@ public class ActivityIngredients extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Ingredient clickedIngredient = adapter.getItem(position);
-                Toast.makeText(ActivityIngredients.this, clickedIngredient.getInfo(), Toast.LENGTH_SHORT).show();
+                ObjectBinder.setObj(clickedIngredient);
+                Intent ingredientsIntent = new Intent(ActivityIngredients.this, ActivityAddIngredient.class);
+                startActivity(ingredientsIntent);
             }
         });
 

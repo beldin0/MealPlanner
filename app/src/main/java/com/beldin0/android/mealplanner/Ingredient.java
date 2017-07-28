@@ -9,7 +9,7 @@ import static org.apache.commons.lang3.text.WordUtils.capitalizeFully;
 public class Ingredient implements Comparable {
 
 	private String name;
-	private Location loc;
+	private Location loc = Location.UNKNOWN;
 	private boolean carb = false;
 	private boolean protein = false;
 

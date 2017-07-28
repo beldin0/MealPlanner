@@ -48,7 +48,7 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
     }
 
     @Override
-    public Ingredient put (String string, Ingredient ingredient) {
+    public Ingredient put(String string, Ingredient ingredient) {
         return this.put(ingredient);
     }
 

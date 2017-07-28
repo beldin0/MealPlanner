@@ -82,7 +82,6 @@ public class DataManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(SqlSchema.sqlAddMeal(meal));
         for (Ingredient ingredient : meal.getIngredients().keySet()) {
-            Log.d("addToDatabase:", "" + meal.toString() + "(" + ingredient.toString() + ")");
             db.execSQL(SqlSchema.sqlAddMealIngredient(meal, ingredient, meal.getQuantity(ingredient)));
         }
     }

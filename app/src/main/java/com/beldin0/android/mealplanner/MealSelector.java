@@ -12,7 +12,11 @@ public class MealSelector {
     private ArrayList<Meal> meals;
 
     public MealSelector () {
-        meals = new ArrayList<Meal>(ArrayFiller.getMeals());
+        this.refresh();
+    }
+
+    public void refresh() {
+        meals = new ArrayList<Meal>(MealList.getMasterList());
     }
 
     public Meal get() {
@@ -25,6 +29,10 @@ public class MealSelector {
         meals.remove(selection);
         return tmpMeal;
 
+    }
+
+    public void remove(Meal meal) {
+        meals.remove(meal);
     }
 
 }

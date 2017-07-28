@@ -1,10 +1,11 @@
 package com.beldin0.android.mealplanner;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,10 +19,10 @@ import android.widget.Toast;
 
 import com.example.android.mealplanner.R;
 
-public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
+public class ActivityAddMeal extends Activity implements NumberPicker.OnValueChangeListener {
 
     private final IngredientMap tmpMealIngredients = new IngredientMap();
-    private final IngredientList tmpSpinner = new IngredientList();
+    private final IngredientList tmpUnusedIngredients = new IngredientList();
     private Spinner mealTypeSpinner;
     private Meal incomingMeal = null;
 
@@ -32,7 +33,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         mealTypeSpinner = ((Spinner) findViewById(R.id.mealtype_spinner));
         ArrayAdapter mtSpinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Meal.MealType.list());
         mealTypeSpinner.setAdapter(mtSpinnerAdapter);
-        tmpSpinner.putAll(IngredientList.getMasterList());
+        tmpUnusedIngredients.putAll(IngredientList.getMasterList());
         if (ObjectBinder.hasObj()) {
             incomingMeal = (Meal) ObjectBinder.getObj();
             mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType()));
@@ -45,11 +46,33 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
     }
 
     public void prepare() {
-        tmpSpinner.removeAll(tmpMealIngredients);
-        ((Spinner) findViewById(R.id.ingredient_spinner)).setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpSpinner.list()));
+        tmpUnusedIngredients.removeAll(tmpMealIngredients);
+        ArrayAdapter ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpUnusedIngredients.list());
+        ingredientAdapter.add("Add New...");
+        Spinner ingredientSpinner = ((Spinner) findViewById(R.id.ingredient_spinner));
+        ingredientSpinner.setAdapter(ingredientAdapter);
+        if (ObjectBinder.hasObj()) {
+            ingredientSpinner.setSelection(ingredientAdapter.getPosition((Ingredient) ObjectBinder.getObj()));
+            ObjectBinder.clear();
+        }
+
+        ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().equals("Add New...")) {
+                    Intent ingredientsIntent = new Intent(ActivityAddMeal.this, ActivityAddIngredient.class);
+                    startActivityForResult(ingredientsIntent, 0);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         final ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_item, tmpMealIngredients.list()));
+        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpMealIngredients.list()));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,6 +88,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
                         .setMessage(String.format("Delete %s?", clickedIngredient.toString()))
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                tmpUnusedIngredients.put(clickedIngredient);
                                 tmpMealIngredients.remove(clickedIngredient);
                                 refresh();
                             }
@@ -150,6 +174,14 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
     public void refresh() {
         super.onRestart();
         prepare();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (ObjectBinder.hasObj()) {
+            tmpUnusedIngredients.put((Ingredient) ObjectBinder.getObj());
+            refresh();
+        }
     }
 
 }
