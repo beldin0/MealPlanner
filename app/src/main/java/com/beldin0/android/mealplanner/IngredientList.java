@@ -25,7 +25,12 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
     }
 
     public Ingredient get(String s) {
-        return super.get(capitalizeFully(s));
+        Ingredient i = super.get(capitalizeFully(s));
+        if (i == null) {
+            i = new Ingredient(s);
+            master.put(i);
+        }
+        return i;
     }
 
     public void remove(Ingredient ingredient) {
@@ -68,6 +73,22 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
         for (Entry<Ingredient, Quantity> entry : iMap.entrySet()) {
             this.remove(entry.getKey().toString());
         }
+    }
+
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"ingredients\":[");
+        int c = 0;
+        for (String i : master.keySet()) {
+            sb.append(master.get(i).toJSON());
+            if (++c < master.size()) {
+                sb.append(",");
+            }
+        }
+        sb.append("]};");
+
+
+        return sb.toString();
     }
 
     @Override

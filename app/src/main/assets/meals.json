@@ -1,0 +1,109 @@
+{
+  "meals": [
+    {
+      "name": "Roast Chicken",
+      "ingredients": [
+        {
+          "ingredient": "Chicken",
+          "amount": 0,
+          "unit": ""
+        },
+        {
+          "ingredient": "Potatoes",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "ingredient": "Stuffing",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "ingredient": "Carrots",
+          "amount": 200,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "name": "Butternut Squash Risotto",
+      "ingredients": [
+        {
+          "ingredient": "Butternut Squash",
+          "amount": 1,
+          "unit": ""
+        },
+        {
+          "ingredient": "Risotto Rice",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "ingredient": "Onion",
+          "amount": 1,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Mackerel Pasta Bake",
+      "ingredients": [
+        {
+          "ingredient": "Smoked Mackerel",
+          "amount": 100,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "name": "Crab Linguine",
+      "ingredients": [
+        {
+          "ingredient": "Tinned Crabmeat",
+          "amount": 200,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "name": "Jambalaya",
+      "ingredients": [
+        {
+          "ingredient": "King Prawns",
+          "amount": 150,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "name": "Quorn Lasagne",
+      "ingredients": [
+        {
+          "ingredient": "Quorn mince",
+          "amount": 450,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "name": "Cacciatore",
+      "ingredients": [
+        {
+          "ingredient": "Chicken Pieces",
+          "amount": 4,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Poached Salmon",
+      "ingredients": [
+        {
+          "ingredient": "Salmon",
+          "amount": 2,
+          "unit": "pieces"
+        }
+      ]
+    }
+  ]
+}

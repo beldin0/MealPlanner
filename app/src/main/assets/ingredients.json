@@ -1,0 +1,88 @@
+{
+  "ingredients": [
+    {
+      "name": "Chicken",
+      "location": "Chilled Meat",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "Chicken Pieces",
+      "location": "Chilled Meat",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "Potatoes",
+      "location": "Fruit & Veg",
+      "carb": true,
+      "protein": false
+    },
+    {
+      "name": "Stuffing",
+      "location": "Store Cupboard",
+      "carb": false,
+      "protein": false
+    },
+    {
+      "name": "Carrots",
+      "location": "Fruit & Veg",
+      "carb": false,
+      "protein": false
+    },
+    {
+      "name": "Lasagne sheets",
+      "location": "Store Cupboard",
+      "carb": true,
+      "protein": false
+    },
+    {
+      "name": "Smoked Mackerel",
+      "location": "Chilled Meat",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "Tinned Crabmeat",
+      "location": "Store Cupboard",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "King Prawns",
+      "location": "Chilled Meat",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "Quorn mince",
+      "location": "Frozen",
+      "carb": false,
+      "protein": true
+    },
+    {
+      "name": "Risotto Rice",
+      "location": "Store Cupboard",
+      "carb": true,
+      "protein": false
+    },
+    {
+      "name": "Butternut Squash",
+      "location": "Fruit & Veg",
+      "carb": false,
+      "protein": false
+    },
+    {
+      "name": "Onion",
+      "location": "Fruit & Veg",
+      "carb": false,
+      "protein": false
+    },
+    {
+      "name": "Salmon",
+      "location": "Chilled Meat",
+      "carb": false,
+      "protein": true
+    }
+  ]
+}

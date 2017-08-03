@@ -1,12 +1,18 @@
 package com.beldin0.android.mealplanner;
 
+import android.content.Context;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Collections;
 
 import static com.beldin0.android.mealplanner.ActivityMain.dr;
 
 public class ArrayFiller {
 
-	public static IngredientList getIngredients() {
+	public static IngredientList getIngredients(Context c) {
 		/**
 		 * Queries the database for ingredients.
 		 * If none found, populates a basic list
@@ -17,22 +23,29 @@ public class ArrayFiller {
 		IngredientList tmp;
 
 		tmp = dr.queryIngredients();
+
 		if (tmp.isEmpty()) {
-			tmp.put(new Ingredient("Chicken", Ingredient.Location.CHILLED, false, true));
-			tmp.put(new Ingredient("Potatoes", Ingredient.Location.VEG, true, false));
-			tmp.put(new Ingredient("Stuffing", Ingredient.Location.CUPBOARD, false, false));
-			tmp.put(new Ingredient("Carrots", Ingredient.Location.VEG, false, false));
-			tmp.put(new Ingredient("Lasagne sheets", Ingredient.Location.CUPBOARD, true, false));
-			tmp.put(new Ingredient("Smoked Mackerel", Ingredient.Location.CHILLED, false, true));
-			tmp.put(new Ingredient("Tinned Crabmeat", Ingredient.Location.CUPBOARD, false, true));
-			tmp.put(new Ingredient("King Prawns", Ingredient.Location.CHILLED, false, true));
-			tmp.put(new Ingredient("Quorn mince", Ingredient.Location.FROZEN, false, true));
-			tmp.put(new Ingredient("Salmon", Ingredient.Location.CHILLED, false, true));
+			fillFromJSON(tmp, JSONHelper.getAsJSON(c, "ingredients"));
 		}
 		return tmp;
 	}
 
-	public static MealList getMeals() {
+	public static void fillFromJSON(IngredientList tmp, String jsonString) {
+		try {
+			JSONObject json = new JSONObject(jsonString);
+			JSONArray m_jArry = json.getJSONArray("ingredients");
+
+			for (int i = 0; i < m_jArry.length(); i++) {
+				Ingredient ingredient = IngredientFromJSONObject(m_jArry.getJSONObject(i));
+				tmp.put(ingredient);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static MealList getMeals(Context c) {
 		/**
 		 * Queries the database for meals.
 		 * If none found, populates a basic list
@@ -44,40 +57,68 @@ public class ArrayFiller {
 		MealList tmp;
 
 		tmp = dr.queryMeals();
+
 		if (tmp.isEmpty()) {
 
-			final String[] name = {"Roast Chicken",
-					"Butternut Squash Risotto",
-					"Mackerel Pasta Bake",
-					"Crab Linguine",
-					"Jambalaya",
-					"Quorn Lasagne",
-					"Cacciatore",
-					"Poached Salmon"
-			};
+			fillFromJSON(tmp, JSONHelper.getAsJSON(c, "meals"));
 
-			final String[][] tmpIngredients = {
-					{"Chicken:1:", "Potatoes:200:g", "Stuffing:50:g", "Carrots:200:g"},
-					{"Lasagne sheets:200:g"},
-					{"Smoked Mackerel:100:g"},
-					{"Tinned Crabmeat:200:g"},
-					{"King Prawns:150:g"},
-					{"Quorn mince:250:g"},
-					{"Chicken Pieces:4:"},
-					{"Salmon:2:pieces"}
-			};
-
-			for (int s=0; s<name.length; s++) {
-				Meal tmpMeal = new Meal(name[s]);
-					for (String iArray : tmpIngredients[s]) {
-						String[] i = iArray.split(":",-1);
-                        tmpMeal.add(IngredientList.getMasterList().get(i[0]), new Quantity(Integer.parseInt(i[1]), "" + i[2]));
-                    }
-				tmp.add(tmpMeal, true);
-			}
 		}
 		Collections.sort(tmp);
 		return tmp;
 	}
-	
+
+	public static void fillFromJSON(MealList tmp, String jsonString) {
+		try {
+			JSONObject json = new JSONObject(jsonString);
+			JSONArray m_jArry = json.getJSONArray("meals");
+
+			for (int i = 0; i < m_jArry.length(); i++) {
+				Meal tmpMeal = MealFromJSONObject(m_jArry.getJSONObject(i));
+				tmp.add(tmpMeal, true);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Ingredient IngredientFromJSONObject(JSONObject jsonObject) {
+
+		Ingredient tmpI = null;
+		try {
+			String name = jsonObject.getString("name");
+			String location = jsonObject.getString("location");
+			boolean carb = jsonObject.getBoolean("carb");
+			boolean protein = jsonObject.getBoolean("protein");
+			tmpI = new Ingredient(name, location, carb, protein);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return tmpI;
+	}
+
+	private static Meal MealFromJSONObject(JSONObject jsonObject) {
+
+		Meal tmpMeal = null;
+
+		try {
+			String name = jsonObject.getString("name");
+			tmpMeal = new Meal(name);
+			JSONArray jArr = jsonObject.getJSONArray("ingredients");
+			for (int i = 0; i < jArr.length(); i++) {
+				JSONObject tmpMealIngredient = jArr.getJSONObject(i);
+				tmpMeal.add(
+						IngredientList.getMasterList().get(tmpMealIngredient.getString("ingredient")),
+						new Quantity(tmpMealIngredient.getInt("amount"), tmpMealIngredient.getString("unit"))
+				);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return tmpMeal;
+	}
+
+
+
 }

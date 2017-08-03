@@ -26,7 +26,22 @@
         android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset database"
+        android:text="Reset database to "
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save database"
+        />
+
+    <Button
+        android:id="@+id/load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load database"
         />
 
 </LinearLayout>

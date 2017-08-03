@@ -28,6 +28,13 @@ public class Ingredient implements Comparable {
 		this.loc = loc;
 	}
 
+	public Ingredient(String name, String loc, boolean carb, boolean protein) {
+		this.name = capitalizeFully(name);
+		this.carb = carb;
+		this.protein = protein;
+		this.loc = Location.toValue(loc);
+	}
+
 	public static void add(IngredientList list, String name, Location loc, boolean carb, boolean protein) {
         list.put(capitalizeFully(name), new Ingredient(capitalizeFully(name), loc, carb, protein));
     }
@@ -60,6 +67,10 @@ public class Ingredient implements Comparable {
 			}
 		}
 		return false;
+	}
+
+	public String toJSON() {
+		return "{\"name\":\"" + name + "\",\"location\":\"" + loc.toString() + "\",\"carb\":" + this.carb + ",\"protein\":" + this.protein + "}";
 	}
 
     @Override

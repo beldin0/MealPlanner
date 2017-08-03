@@ -87,6 +87,20 @@ public class Meal implements Comparable{
         this.inAdvance = inAdvance;
 	}
 
+	public String toJSON() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"name\":\"" + name + "\",\"ingredients\":[");
+		int c = 0;
+		for (Ingredient i : ingredients.keySet()) {
+			sb.append("{\"ingredient\":\"" + i.toString() + "\", \"amount\":" + ingredients.get(i).getAmount() + ", \"unit\":\"" + ingredients.get(i).getUnitOnly() + "\"}");
+			if (++c < ingredients.size()) {
+				sb.append(",");
+			}
+		}
+		sb.append("]}");
+		return sb.toString();
+	}
+
 	@Override
     public int compareTo(@NonNull Object o) {
         Meal c = (Meal)o;

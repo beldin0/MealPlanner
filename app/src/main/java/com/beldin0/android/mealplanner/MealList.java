@@ -44,6 +44,21 @@ public class MealList extends ArrayList<Meal> {
         return b;
     }
 
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"meals\":[");
+        int c = 0;
+        for (Meal m : master) {
+            sb.append(m.toJSON());
+            if (++c < master.size()) {
+                sb.append(",");
+            }
+        }
+        ;
+        sb.append("]};");
+        return sb.toString();
+    }
+
     public boolean contains(Meal m) {
         for (Meal meal : master) {
             if (meal.toString().equals(m.toString())) return true;
