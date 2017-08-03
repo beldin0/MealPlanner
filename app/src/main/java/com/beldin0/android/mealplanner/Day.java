@@ -39,6 +39,15 @@ class Day {
         return masterWeek;
     }
 
+    public static String getWeekAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < masterWeek.length; i++) {
+            sb.append(masterWeek[i].name + ": " + masterWeek[i].getMeal().toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 
     public String toString() {
         return this.name;

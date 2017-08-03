@@ -36,4 +36,15 @@ public class ShoppingList extends TreeMap<String, Pair<Ingredient, Quantity>> {
         }
 
     }
+
+    public String outputToString() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Pair<Ingredient, Quantity>> entry : this.entrySet()) {
+            sb.append(entry.getValue().first.toString() + " " + entry.getValue().second.toString());
+            sb.append("\n");
+        }
+
+
+        return sb.toString();
+    }
 }
