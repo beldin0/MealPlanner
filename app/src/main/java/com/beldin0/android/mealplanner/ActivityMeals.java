@@ -4,10 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
@@ -17,11 +18,20 @@ public class ActivityMeals extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Meals");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         prepare();
     }
 
     private void prepare() {
-        setContentView(R.layout.list_main);
         MealAdapter adapter = new MealAdapter(this, MealList.getMasterList());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
@@ -46,7 +56,7 @@ public class ActivityMeals extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MealList.getMasterList().remove(clickedMeal);
-                                    refresh();
+                                refresh();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -58,7 +68,7 @@ public class ActivityMeals extends AppCompatActivity {
             }
         });
 
-        Button btn = (Button) findViewById(R.id.button_new);
+        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
         btn.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,5 +86,11 @@ public class ActivityMeals extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         prepare();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

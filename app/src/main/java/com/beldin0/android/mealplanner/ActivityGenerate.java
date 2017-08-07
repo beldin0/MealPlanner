@@ -3,7 +3,9 @@ package com.beldin0.android.mealplanner;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,17 +16,33 @@ import com.example.android.mealplanner.R;
 
 public class ActivityGenerate extends AppCompatActivity {
     private MealSelector ms = new MealSelector();
-    private boolean already = true;
+    private boolean already = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        generate();
+
+        if (Day.getMasterWeek()[0].getMeal() == null) {
+            generate();
+        }
+
+        setContentView(R.layout.activity_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Meal Plan");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
+        btn.setVisibility(View.GONE);
+
         prepare();
     }
 
     private void prepare() {
-        setContentView(R.layout.list_main);
+
         DayAdapter adapter = new DayAdapter(this, Day.getMasterWeek());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
@@ -51,6 +69,7 @@ public class ActivityGenerate extends AppCompatActivity {
         });
 
         Button btn = (Button) findViewById(R.id.button_new);
+        btn.setVisibility(View.VISIBLE);
         btn.setText("View shopping for this plan");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,9 +98,7 @@ public class ActivityGenerate extends AppCompatActivity {
     }
 
     private void generate() {
-        if (Day.getMasterWeek()[0].getMeal() == null) {
-            already = false;
-        }
+
         if (!already) {
             ms.refresh();
             for (Day d : Day.getMasterWeek()) {
@@ -102,7 +119,11 @@ public class ActivityGenerate extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Day.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
+                if (MealList.getMasterList().contains(eTxt.getText().toString())) {
+                    Day.getMasterWeek()[i].setMeal(MealList.getMasterList().get(eTxt.getText().toString()));
+                } else {
+                    Day.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
+                }
                 prepare();
                 tmpDialog.dismiss();
             }
@@ -114,5 +135,11 @@ public class ActivityGenerate extends AppCompatActivity {
             }
         });
         return tmpDialog;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

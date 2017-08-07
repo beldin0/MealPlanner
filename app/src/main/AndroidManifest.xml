@@ -22,8 +22,8 @@
         <activity android:name="com.beldin0.android.mealplanner.ActivityMeals"/>
         <activity android:name="com.beldin0.android.mealplanner.ActivityGenerate"/>
         <activity android:name="com.beldin0.android.mealplanner.ActivityShoppingList"/>
-        <activity android:name="com.beldin0.android.mealplanner.ActivityAddMeal">
-        </activity>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityAddMeal"/>
+        <activity android:name="com.beldin0.android.mealplanner.ActivitySettings"/>
     </application>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

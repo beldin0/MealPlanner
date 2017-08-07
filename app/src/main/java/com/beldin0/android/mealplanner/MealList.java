@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.beldin0.android.mealplanner.ActivityMain.dr;
+import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 /**
  * Created by beldi on 07/07/2017.
@@ -65,4 +66,19 @@ public class MealList extends ArrayList<Meal> {
         }
         return false;
     }
+
+    public boolean contains(String s) {
+        for (Meal meal : master) {
+            if (meal.toString().equals(capitalizeFully(s))) return true;
+        }
+        return false;
+    }
+
+    public Meal get(String s) {
+        for (Meal meal : master) {
+            if (meal.toString().equals(capitalizeFully(s))) return meal;
+        }
+        return new Meal(s + " not found");
+    }
+
 }

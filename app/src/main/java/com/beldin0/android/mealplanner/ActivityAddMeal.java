@@ -1,11 +1,12 @@
 package com.beldin0.android.mealplanner;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,17 +20,26 @@ import android.widget.Toast;
 
 import com.example.android.mealplanner.R;
 
-public class ActivityAddMeal extends Activity implements NumberPicker.OnValueChangeListener {
+public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
     private final IngredientMap tmpMealIngredients = new IngredientMap();
     private final IngredientList tmpUnusedIngredients = new IngredientList();
     private Spinner mealTypeSpinner;
     private Meal incomingMeal = null;
+    private boolean changes = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meal);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Add Ingredient");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mealTypeSpinner = ((Spinner) findViewById(R.id.mealtype_spinner));
         ArrayAdapter mtSpinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Meal.MealType.list());
         mealTypeSpinner.setAdapter(mtSpinnerAdapter);
@@ -88,6 +98,7 @@ public class ActivityAddMeal extends Activity implements NumberPicker.OnValueCha
                         .setMessage(String.format("Delete %s?", clickedIngredient.toString()))
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                changes = true;
                                 tmpUnusedIngredients.put(clickedIngredient);
                                 tmpMealIngredients.remove(clickedIngredient);
                                 refresh();
@@ -106,6 +117,7 @@ public class ActivityAddMeal extends Activity implements NumberPicker.OnValueCha
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changes = true;
                 Ingredient ingredient = IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString());
                 final Dialog d = ingredientQuantityDialog(ingredient);
                 d.show();
@@ -180,7 +192,20 @@ public class ActivityAddMeal extends Activity implements NumberPicker.OnValueCha
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ObjectBinder.hasObj()) {
             tmpUnusedIngredients.put((Ingredient) ObjectBinder.getObj());
+            changes = true;
             refresh();
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (changes) {
+            changes = false;
+            Toast.makeText(this, "Press again to discard changes", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            onBackPressed();
+            return true;
         }
     }
 

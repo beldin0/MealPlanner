@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Meal Planner</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="welcome_to_meal_planner">Welcome to Meal Planner!\nUse the menu button to get started</string>
+    <string name="location">Location</string>
+    <string name="ingredient_protein_text">This ingredient contains protein</string>
+    <string name="ingredient_carb_text">This ingredient contains carbs</string>
+    <string name="ingredient_save">Save this ingredient</string>
+    <string name="location_text">Location:</string>
+    <string name="ingredient">Ingredient:</string>
+    <string name="meal_type">Meal Type</string>
+    <string name="meal_in_advance_text">This can be cooked in advance</string>
+    <string name="meal">Meal:</string>
+    <string name="add_this_ingredient">Add this ingredient</string>
+    <string name="save_this_meal">Save this meal</string>
+    <string name="unit">Unit (e.g. g)</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="custom_meal">Custom Meal</string>
+
 </resources>

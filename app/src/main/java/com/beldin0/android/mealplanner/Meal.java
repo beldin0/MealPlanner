@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.apache.commons.lang.WordUtils.capitalizeFully;
+
 public class Meal implements Comparable{
 	
 	private String name;
@@ -15,8 +17,8 @@ public class Meal implements Comparable{
 
 	public Meal(String name) {
 		// ingredients = new Map<Ingredient, Quantity>();
-		this.name = name;
-		ingredients = new IngredientMap();
+        this.name = capitalizeFully(name);
+        ingredients = new IngredientMap();
 	}
 
 	public IngredientMap getIngredients() {return ingredients;}

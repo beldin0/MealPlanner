@@ -2,10 +2,11 @@ package com.beldin0.android.mealplanner;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
@@ -24,15 +25,24 @@ public class ActivityShoppingList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_main);
+
+        setContentView(R.layout.activity_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Shopping List");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
+        btn.setVisibility(View.GONE);
+
         sl.generate(Day.getMasterWeek());
 
         ShoppingListAdapter adapter = new ShoppingListAdapter(sl);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
-
-        Button btn = (Button) findViewById(R.id.button_new);
-        btn.setVisibility(View.GONE);
 
         save(Day.getWeekAsString() + sl.outputToString());
     }
@@ -54,5 +64,16 @@ public class ActivityShoppingList extends AppCompatActivity {
             Log.w("ExternalStorage", "Error writing " + file, e);
 
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

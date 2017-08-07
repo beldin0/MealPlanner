@@ -5,8 +5,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.example.android.mealplanner.com.beldin0.android.mealplanner.ActivityAddIngredient">
+              tools:context="com.beldin0.android.mealplanner.ActivityAddIngredient">
 
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +20,7 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredient:" >
+            android:text="@string/ingredient">
         </TextView>
 
         <EditText
@@ -38,7 +42,7 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location:" >
+            android:text="@string/location_text">
         </TextView>
 
         <Spinner
@@ -47,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
-            android:text="Location">
+            android:text="@string/location">
         </Spinner>
 
     </LinearLayout>
@@ -58,8 +62,8 @@
         style="@style/MenuStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:text="This ingredient contains protein"
+        android:layout_marginStart="18dp"
+        android:text="@string/ingredient_protein_text"
         >
     </CheckBox>
 
@@ -68,8 +72,8 @@
         style="@style/MenuStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:text="This ingredient contains carbs"
+        android:layout_marginStart="18dp"
+        android:text="@string/ingredient_carb_text"
         >
     </CheckBox>
 
@@ -78,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Save this ingredient"
+        android:text="@string/ingredient_save"
         tools:background="@android:drawable/btn_default">
 
     </Button>

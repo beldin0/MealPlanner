@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Meal Plans">
+            <menu>
+                <item
+                    android:id="@+id/plan"
+                    android:title="Make a new plan"/>
+                <item
+                    android:id="@+id/previous"
+                    android:title="Look at previous plans"/>
+            </menu>
+        </item>
+        <item android:title="Recipes">
+            <menu>
+                <item
+                    android:id="@+id/ingredients"
+                    android:title="View/Edit Ingredients"/>
+                <item
+                    android:id="@+id/meals"
+                    android:title="View/Edit Meals"/>
+            </menu>
+        </item>
+        <item android:title="Other">
+            <menu>
+                <item
+                    android:id="@+id/settings"
+                    android:title="App Settings"/>
+            </menu>
+        </item>
+    </group>
+
+</menu>

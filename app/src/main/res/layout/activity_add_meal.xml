@@ -5,8 +5,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.example.android.mealplanner.com.beldin0.android.mealplanner.ActivityAddIngredient">
+              tools:context="com.beldin0.android.mealplanner.ActivityAddIngredient">
 
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +20,7 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meal:">
+            android:text="@string/meal">
         </TextView>
 
         <EditText
@@ -36,8 +40,8 @@
         style="@style/MenuStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:text="This can be cooked in advance"
+        android:layout_marginStart="18dp"
+        android:text="@string/meal_in_advance_text"
         >
     </CheckBox>
 
@@ -49,7 +53,7 @@
             style="@style/MenuStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meal Type"
+            android:text="@string/meal_type"
             />
 
         <Spinner
@@ -57,7 +61,7 @@
             style="@style/MenuStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
+            android:text="@string/location"
             tools:background="@android:drawable/btn_dropdown">
         </Spinner>
     </LinearLayout>
@@ -72,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Add this ingredient"
+            android:text="@string/add_this_ingredient"
             tools:background="@android:drawable/btn_default">
 
         </Button>
@@ -82,7 +86,7 @@
             style="@style/MenuStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
+            android:text="@string/location"
             tools:background="@android:drawable/btn_dropdown">
         </Spinner>
 
@@ -102,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Save this meal"
+        android:text="@string/save_this_meal"
         tools:background="@android:drawable/btn_default">
 
     </Button>

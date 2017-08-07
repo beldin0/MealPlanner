@@ -5,15 +5,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.android.mealplanner.R;
 
-public class ActivityMain extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     static DataManager dr;
@@ -55,60 +59,55 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView plan = (TextView)findViewById(R.id.plan);
-        plan.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent planIntent = new Intent(ActivityMain.this, ActivityGenerate.class);
-                startActivity(planIntent);
-            }});
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        TextView ingredients = (TextView)findViewById(R.id.ingredients);
-        ingredients.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent ingredientsIntent = new Intent(ActivityMain.this, ActivityIngredients.class);
-                startActivity(ingredientsIntent);
-            }});
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-        TextView meals = (TextView)findViewById(R.id.meals);
-        meals.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent mealsIntent = new Intent(ActivityMain.this, ActivityMeals.class);
-                startActivity(mealsIntent);
-            }});
-
-        Button resetBtn = (Button) findViewById(R.id.reset);
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IngredientList.getMasterList().clear();
-                MealList.getMasterList().clear();
-                dr.reset();
-                IngredientList.getMasterList().putAll(ArrayFiller.getIngredients(ActivityMain.this));
-                MealList.getMasterList().addAll(ArrayFiller.getMeals(ActivityMain.this));
-            }
-        });
-
-        Button saveBtn = (Button) findViewById(R.id.save);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONHelper.saveJSON("ingredients", IngredientList.getMasterList().toJSON());
-                JSONHelper.saveJSON("meals", MealList.getMasterList().toJSON());
-            }
-        });
-
-
-        Button loadBtn = (Button) findViewById(R.id.load);
-        loadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IngredientList.getMasterList().clear();
-                MealList.getMasterList().clear();
-                dr.reset();
-                ArrayFiller.fillFromJSON(IngredientList.getMasterList(), JSONHelper.loadJSON("ingredients"));
-                ArrayFiller.fillFromJSON(MealList.getMasterList(), JSONHelper.loadJSON("meals"));
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.plan) {
+            Intent intent = new Intent(ActivityMain.this, ActivityGenerate.class);
+            startActivity(intent);
+        } else if (id == R.id.previous) {
+            Toast.makeText(this, "NOT YET IMPLEMENTED", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.ingredients) {
+            Intent intent = new Intent(ActivityMain.this, ActivityIngredients.class);
+            startActivity(intent);
+        } else if (id == R.id.meals) {
+            Intent intent = new Intent(ActivityMain.this, ActivityMeals.class);
+            startActivity(intent);
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(ActivityMain.this, ActivitySettings.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 
 }
