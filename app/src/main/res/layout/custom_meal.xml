@@ -17,8 +17,9 @@
 
         <EditText
             android:id="@+id/etxt_custom_meal"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
+            android:inputType="textCapWords"
             android:maxLines="1">
         </EditText>
     </LinearLayout>

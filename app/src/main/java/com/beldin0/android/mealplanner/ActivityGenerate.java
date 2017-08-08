@@ -1,7 +1,8 @@
 package com.beldin0.android.mealplanner;
 
 import android.app.Dialog;
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,17 +15,20 @@ import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
 
+import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
+
 public class ActivityGenerate extends AppCompatActivity {
     private MealSelector ms = new MealSelector();
-    private boolean already = false;
+    private DayAdapter adapter;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Day.setWeekStart(settings.getInt("startday", 0));
 
-        if (Day.getMasterWeek()[0].getMeal() == null) {
-            generate();
-        }
+        generate(settings.contains("meals"));
 
         setContentView(R.layout.activity_list);
 
@@ -35,15 +39,20 @@ public class ActivityGenerate extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
-        btn.setVisibility(View.GONE);
+        FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
+        fbtn.setVisibility(View.GONE);
 
-        prepare();
-    }
+        Button btn1 = (Button) findViewById(R.id.button_retry);
+        btn1.setVisibility(View.VISIBLE);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generate(false);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-    private void prepare() {
-
-        DayAdapter adapter = new DayAdapter(this, Day.getMasterWeek());
+        adapter = new DayAdapter(this, Day.getMasterWeek());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -55,7 +64,8 @@ public class ActivityGenerate extends AppCompatActivity {
                     ms.remove(d.getMeal());
                 }
                 Day.getMasterWeek()[position].setMeal(ms.get());
-                prepare();
+                storeMeals();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -68,43 +78,35 @@ public class ActivityGenerate extends AppCompatActivity {
             }
         });
 
-        Button btn = (Button) findViewById(R.id.button_new);
-        btn.setVisibility(View.VISIBLE);
-        btn.setText("View shopping for this plan");
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent planIntent = new Intent(ActivityGenerate.this, ActivityShoppingList.class);
-                startActivity(planIntent);
-            }
-        });
 
-        Button btn1 = (Button) findViewById(R.id.button_retry);
-        btn1.setVisibility(View.VISIBLE);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                already = false;
-                generate();
-                onRestart();
-            }
-        });
+    }
+
+    private void storeMeals() {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("meals", Day.getMealsAsString());
+        editor.apply();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        prepare();
     }
 
-    private void generate() {
+    private void generate(boolean useMealsFromPreferences) {
 
-        if (!already) {
+        if (useMealsFromPreferences) {
+            String mealnames = (settings.getString("meals", ""));
+            String[] mealNames = mealnames.split("%");
+            int c = 0;
+            for (Day d : Day.getMasterWeek()) {
+                d.setMeal(MealList.getMasterList().get(mealNames[c++]));
+            }
+        } else {
             ms.refresh();
             for (Day d : Day.getMasterWeek()) {
                 d.setMeal(ms.get());
             }
-            already = true;
+            storeMeals();
         }
     }
 
@@ -124,7 +126,8 @@ public class ActivityGenerate extends AppCompatActivity {
                 } else {
                     Day.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
                 }
-                prepare();
+                storeMeals();
+                adapter.notifyDataSetChanged();
                 tmpDialog.dismiss();
             }
         });

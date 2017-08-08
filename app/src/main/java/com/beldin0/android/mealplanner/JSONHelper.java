@@ -52,7 +52,6 @@ public class JSONHelper {
 
         } catch (IOException e) {
             Log.w("ExternalStorage", "Error writing " + file, e);
-
         }
     }
 

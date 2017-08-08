@@ -15,6 +15,8 @@ import com.example.android.mealplanner.R;
 
 public class ActivityMeals extends AppCompatActivity {
 
+    private MealAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +30,7 @@ public class ActivityMeals extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        prepare();
-    }
-
-    private void prepare() {
-        MealAdapter adapter = new MealAdapter(this, MealList.getMasterList());
+        adapter = new MealAdapter(this, MealList.getMasterList());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -56,7 +54,7 @@ public class ActivityMeals extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MealList.getMasterList().remove(clickedMeal);
-                                refresh();
+                                adapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -85,7 +83,7 @@ public class ActivityMeals extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        prepare();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

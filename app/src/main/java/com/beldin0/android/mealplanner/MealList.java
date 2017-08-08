@@ -75,10 +75,11 @@ public class MealList extends ArrayList<Meal> {
     }
 
     public Meal get(String s) {
+        s = capitalizeFully(s);
         for (Meal meal : master) {
-            if (meal.toString().equals(capitalizeFully(s))) return meal;
+            if (meal.toString().equals(s)) return meal;
         }
-        return new Meal(s + " not found");
+        return new Meal("[" + s.replace("[", "").replace("]", "") + "]");
     }
 
 }

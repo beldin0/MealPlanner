@@ -8,33 +8,71 @@
     android:orientation="vertical"
     tools:context="com.beldin0.android.mealplanner.ActivitySettings">
 
-    <LinearLayout
+    <include
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"/>
 
-        <include
-            layout="@layout/app_bar_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:useDefaultMargins="true"
+        >
 
-    <Button
-        android:id="@+id/reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reset"/>
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start day of the week:"
+            />
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load"/>
+        <Spinner
+            android:id="@+id/day_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/load"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"/>
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save current database:"
+            />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"/>
+
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load saved database:"
+            />
+
+        <Button
+            android:id="@+id/load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load"/>
+
+        <TextView
+            style="@style/MenuStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset database:"
+            />
+
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"/>
+
+
+    </GridLayout>
+
 
 </LinearLayout>

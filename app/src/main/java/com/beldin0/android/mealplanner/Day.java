@@ -2,7 +2,7 @@ package com.beldin0.android.mealplanner;
 
 class Day {
 
-    private static final String[] weekDays = {
+    public static final String[] WEEK_DAYS = {
             "Monday",
             "Tuesday",
             "Wednesday",
@@ -12,6 +12,7 @@ class Day {
             "Sunday",
     };
     private static Day[] masterWeek = null;
+    private static int currentStartDay = 0;
     private String name;
     private Meal meal;
 
@@ -19,14 +20,32 @@ class Day {
         this.name = dayName;
     }
 
-    public static Day[] makeWeek(int startDay) {
-        masterWeek = new Day[7];
-        int day = Math.max(0, startDay - 1);
+    public static int getWeekStart() {
+        return currentStartDay;
+    }
 
-        for (int i = 0; i < 7; i++) {
-            masterWeek[i] = new Day(weekDays[day]);
-            if (++day > 6) {
-                day = 0;
+    public static void setWeekStart(int startDay) {
+        currentStartDay = startDay;
+        makeWeek(currentStartDay);
+    }
+
+    public static Day[] makeWeek(int startDay) {
+        if (startDay < 0 || startDay > 7) startDay = 0;
+        int day = startDay;
+        if (masterWeek == null) {
+            masterWeek = new Day[7];
+            for (int i = 0; i < 7; i++) {
+                masterWeek[i] = new Day(WEEK_DAYS[day]);
+                if (++day > 6) {
+                    day = 0;
+                }
+            }
+        } else {
+            for (int i = 0; i < 7; i++) {
+                masterWeek[i].name = WEEK_DAYS[day];
+                if (++day > 6) {
+                    day = 0;
+                }
             }
         }
         return masterWeek;
@@ -34,7 +53,7 @@ class Day {
 
     public static Day[] getMasterWeek() {
         if (masterWeek == null) {
-            masterWeek = makeWeek(1);
+            masterWeek = makeWeek(currentStartDay);
         }
         return masterWeek;
     }
@@ -48,6 +67,18 @@ class Day {
         return sb.toString();
     }
 
+    public static String getMealsAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < masterWeek.length; i++) {
+            sb.append(masterWeek[i].getMeal().toString());
+            sb.append("%");
+        }
+        return sb.toString();
+    }
+
+    public static boolean exists() {
+        return (masterWeek != null);
+    }
 
     public String toString() {
         return this.name;

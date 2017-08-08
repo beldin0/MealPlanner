@@ -2,7 +2,9 @@ package com.beldin0.android.mealplanner;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,6 +21,7 @@ import com.example.android.mealplanner.R;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String PREFS_NAME = "preferences";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     static DataManager dr;
     private static String[] PERMISSIONS_STORAGE = {
@@ -49,6 +52,17 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        verifyStoragePermissions(this);
+
+        do {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            if (!settings.contains("startday")) {
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("startday", 0);
+                editor.apply();
+            }
+        } while (false);
 
         dr = new DataManager(this);
 
@@ -90,6 +104,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.plan) {
             Intent intent = new Intent(ActivityMain.this, ActivityGenerate.class);
+            startActivity(intent);
+        } else if (id == R.id.shopping) {
+            Intent intent = new Intent(ActivityMain.this, ActivityShoppingList.class);
             startActivity(intent);
         } else if (id == R.id.previous) {
             Toast.makeText(this, "NOT YET IMPLEMENTED", Toast.LENGTH_SHORT).show();

@@ -16,6 +16,8 @@ import com.example.android.mealplanner.R;
 
 public class ActivityIngredients extends AppCompatActivity {
 
+    private IngredientAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +31,7 @@ public class ActivityIngredients extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        prepare();
-    }
-
-    private void prepare() {
-
-        final IngredientAdapter adapter = new IngredientAdapter(ActivityIngredients.this, IngredientList.getMasterList().list());
+        adapter = new IngredientAdapter(ActivityIngredients.this, IngredientList.getMasterList().list());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -62,7 +59,7 @@ public class ActivityIngredients extends AppCompatActivity {
                                     dialog.dismiss();
                                 } else {
                                     IngredientList.getMasterList().remove(clickedIngredient);
-                                    refresh();
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         })
@@ -85,14 +82,10 @@ public class ActivityIngredients extends AppCompatActivity {
         });
     }
 
-    public void refresh() {
-        onRestart();
-    }
-
     @Override
     protected void onRestart() {
         super.onRestart();
-        prepare();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

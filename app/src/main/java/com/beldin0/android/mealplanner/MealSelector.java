@@ -16,7 +16,7 @@ public class MealSelector {
     }
 
     public void refresh() {
-        meals = new ArrayList<Meal>(MealList.getMasterList());
+        meals = new ArrayList<>(MealList.getMasterList());
     }
 
     public Meal get() {

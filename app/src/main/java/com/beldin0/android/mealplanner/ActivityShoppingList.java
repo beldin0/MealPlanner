@@ -1,5 +1,7 @@
 package com.beldin0.android.mealplanner;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
+
 public class ActivityShoppingList extends AppCompatActivity {
 
     ShoppingList sl = new ShoppingList();
@@ -25,6 +29,10 @@ public class ActivityShoppingList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Day.exists()) {
+            fillEmptyWeek();
+        }
 
         setContentView(R.layout.activity_list);
 
@@ -75,5 +83,15 @@ public class ActivityShoppingList extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void fillEmptyWeek() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String mealnames = (settings.getString("meals", ""));
+        String[] mealNames = mealnames.split("%");
+        int c = 0;
+        for (Day d : Day.getMasterWeek()) {
+            d.setMeal(MealList.getMasterList().get(mealNames[c++]));
+        }
     }
 }
