@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.android.mealplanner.R;
 
@@ -103,13 +102,14 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.plan) {
-            Intent intent = new Intent(ActivityMain.this, ActivityGenerate.class);
+            Intent intent = new Intent(ActivityMain.this, ActivityMealSelection.class);
             startActivity(intent);
         } else if (id == R.id.shopping) {
             Intent intent = new Intent(ActivityMain.this, ActivityShoppingList.class);
             startActivity(intent);
         } else if (id == R.id.previous) {
-            Toast.makeText(this, "NOT YET IMPLEMENTED", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ActivityMain.this, ActivityViewPlans.class);
+            startActivity(intent);
         } else if (id == R.id.ingredients) {
             Intent intent = new Intent(ActivityMain.this, ActivityIngredients.class);
             startActivity(intent);

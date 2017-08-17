@@ -12,8 +12,8 @@ android {
         applicationId "com.beldin0.android.mealplanner"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 4
-        versionName "4.0"
+        versionCode 5
+        versionName "0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,6 +34,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.mod4j.org.apache.commons:lang:2.1.0'
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:26.0.0-alpha1'
+    testCompile 'junit:junit:4.12'
 }

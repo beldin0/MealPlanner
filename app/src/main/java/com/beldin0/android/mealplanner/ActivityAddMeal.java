@@ -62,8 +62,9 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         Spinner ingredientSpinner = ((Spinner) findViewById(R.id.ingredient_spinner));
         ingredientSpinner.setAdapter(ingredientAdapter);
         if (ObjectBinder.hasObj()) {
-            ingredientSpinner.setSelection(ingredientAdapter.getPosition((Ingredient) ObjectBinder.getObj()));
+            ingredientSpinner.setSelection(ingredientAdapter.getPosition(ObjectBinder.getObj()));
             ObjectBinder.clear();
+            addingIngredient();
         }
 
         ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,10 +118,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changes = true;
-                Ingredient ingredient = IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString());
-                final Dialog d = ingredientQuantityDialog(ingredient);
-                d.show();
+                addingIngredient();
             }
         });
 
@@ -146,6 +144,13 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
                 finish();
             }
         });
+    }
+
+    private void addingIngredient() {
+        changes = true;
+        Ingredient ingredient = IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString());
+        final Dialog d = ingredientQuantityDialog(ingredient);
+        d.show();
     }
 
     private Dialog ingredientQuantityDialog(final Ingredient ingredient) {

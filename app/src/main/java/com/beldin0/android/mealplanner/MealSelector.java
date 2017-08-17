@@ -7,32 +7,65 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by Jim on 29/06/2017.
  */
 
-public class MealSelector {
+public class MealSelector extends ArrayList<Meal> {
 
-    private ArrayList<Meal> meals;
-
-    public MealSelector () {
+    public MealSelector() {
         this.refresh();
     }
 
     public void refresh() {
-        meals = new ArrayList<>(MealList.getMasterList());
+        this.clear();
+        this.addAll(MealList.getMasterList());
     }
 
     public Meal get() {
 
-        if (meals.size()==0) return new Meal("Out of meals!");
+        if (this.size() == 0) return new Meal("# Out of meals! #");
 
-        int selection = ThreadLocalRandom.current().nextInt(0,meals.size());
+        int selection = ThreadLocalRandom.current().nextInt(0, this.size());
 
-        Meal tmpMeal = meals.get(selection);
-        meals.remove(selection);
+        Meal tmpMeal = this.get(selection);
+        this.remove(selection);
         return tmpMeal;
 
     }
 
-    public void remove(Meal meal) {
-        meals.remove(meal);
-    }
+    public Meal get(MealOptions options) {
 
+        if (options == null) {
+            return get();
+        }
+
+        MealSelector tmpMs = new MealSelector();
+        tmpMs.clear();
+        tmpMs.addAll(this);
+        Meal selection;
+        if (options.getInAdvance()) {
+            for (Meal m : this) {
+                if (!m.inAdvance()) {
+                }
+            }
+        }
+        if (options.getType() != null) {
+            Meal.MealType type = options.getType();
+            for (Meal m : this) {
+                if (m.getType() != type) {
+                    tmpMs.remove(m);
+                }
+            }
+        }
+        if (options.getCookTime() > 0) {
+            int cookTime = options.getCookTime();
+            for (Meal m : this) {
+
+                if (m.getCookTime() > cookTime) {
+                    tmpMs.remove(m);
+                }
+            }
+        }
+        selection = tmpMs.get();
+        this.remove(selection);
+
+        return selection;
+    }
 }

@@ -80,6 +80,12 @@ class Day {
         return (masterWeek != null);
     }
 
+    public static void clear() {
+        for (int i = 0; i < masterWeek.length; i++) {
+            masterWeek[i].setMeal(null);
+        }
+    }
+
     public String toString() {
         return this.name;
     }

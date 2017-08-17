@@ -35,6 +35,7 @@ public class MealList extends ArrayList<Meal> {
         if (addToDatabase) {
             dr.addToDatabase(m);
         }
+        Collections.sort(this);
         return b;
     }
 

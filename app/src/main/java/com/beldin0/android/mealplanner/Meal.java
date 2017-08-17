@@ -12,7 +12,7 @@ public class Meal implements Comparable{
 	private String name;
 	private IngredientMap ingredients;
 	private MealType type = MealType.NONE;
-	private int cookTime;
+	private int cookTime = 0;
 	private boolean inAdvance = false;
 
 	public Meal(String name) {

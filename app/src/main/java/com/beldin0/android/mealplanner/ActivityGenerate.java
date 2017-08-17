@@ -2,11 +2,13 @@ package com.beldin0.android.mealplanner;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,20 +17,26 @@ import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.drawable.ic_media_play;
 import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
 
 public class ActivityGenerate extends AppCompatActivity {
     private MealSelector ms = new MealSelector();
     private DayAdapter adapter;
     private SharedPreferences settings;
+    private HashMap<Integer, MealOptions> options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        options = (HashMap) ObjectBinder.getObj();
         Day.setWeekStart(settings.getInt("startday", 0));
 
-        generate(settings.contains("meals"));
+        generate();
 
         setContentView(R.layout.activity_list);
 
@@ -40,14 +48,25 @@ public class ActivityGenerate extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
-        fbtn.setVisibility(View.GONE);
+        fbtn.setImageResource(ic_media_play);
+        fbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeMeals();
+                ObjectBinder.clear();
+                Intent intent = new Intent();
+                intent.putExtra("GENERATED", true);
+                setResult(2, intent);
+                finish();
+            }
+        });
 
         Button btn1 = (Button) findViewById(R.id.button_retry);
         btn1.setVisibility(View.VISIBLE);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                generate(false);
+                generate();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -63,8 +82,11 @@ public class ActivityGenerate extends AppCompatActivity {
                 for (Day d : Day.getMasterWeek()) {
                     ms.remove(d.getMeal());
                 }
-                Day.getMasterWeek()[position].setMeal(ms.get());
-                storeMeals();
+                if (options == null) {
+                    Day.getMasterWeek()[position].setMeal(ms.get());
+                } else {
+                    Day.getMasterWeek()[position].setMeal(ms.get(options.get(position)));
+                }
                 adapter.notifyDataSetChanged();
             }
         });
@@ -92,21 +114,22 @@ public class ActivityGenerate extends AppCompatActivity {
         super.onRestart();
     }
 
-    private void generate(boolean useMealsFromPreferences) {
+    private void generate() {
+        Day.clear();
+        ms.refresh();
 
-        if (useMealsFromPreferences) {
-            String mealnames = (settings.getString("meals", ""));
-            String[] mealNames = mealnames.split("%");
-            int c = 0;
-            for (Day d : Day.getMasterWeek()) {
-                d.setMeal(MealList.getMasterList().get(mealNames[c++]));
+        if (!(options == null)) {
+            for (Map.Entry<Integer, MealOptions> entry : options.entrySet()) {
+                Day d = Day.getMasterWeek()[entry.getKey()];
+                Log.d("Setting ", d.toString());
+                d.setMeal(ms.get(entry.getValue()));
             }
-        } else {
-            ms.refresh();
-            for (Day d : Day.getMasterWeek()) {
+        }
+
+        for (Day d : Day.getMasterWeek()) {
+            if (d.getMeal() == null) {
                 d.setMeal(ms.get());
             }
-            storeMeals();
         }
     }
 
@@ -126,7 +149,6 @@ public class ActivityGenerate extends AppCompatActivity {
                 } else {
                     Day.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
                 }
-                storeMeals();
                 adapter.notifyDataSetChanged();
                 tmpDialog.dismiss();
             }
@@ -142,6 +164,7 @@ public class ActivityGenerate extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        ObjectBinder.clear();
         onBackPressed();
         return true;
     }

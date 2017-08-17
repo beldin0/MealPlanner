@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill_horizontal"
+            android:columnCount="2"
+    >
+
+    <CheckBox
+        android:id="@+id/chk_Type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Of specified type"/>
+
+    <TextView
+        android:id="@+id/spin_Type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        />
+
+    <CheckBox
+        android:id="@+id/chk_Advance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cookable in advance"/>
+
+    <TextView/>
+
+    <CheckBox
+        android:id="@+id/chk_Max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max Cook time:"/>
+
+    <SeekBar
+        android:id="@+id/seek_Max"
+        style="@style/Widget.AppCompat.SeekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity=""
+        android:enabled="false"
+        android:focusable="false"
+        android:max="120"
+        android:minWidth="150dp"
+        android:paddingTop="6dp"
+        android:progress="30"
+        />
+
+</GridLayout>

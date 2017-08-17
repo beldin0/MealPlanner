@@ -6,13 +6,13 @@
             <menu>
                 <item
                     android:id="@+id/plan"
-                    android:title="View/Edit current plan"/>
+                    android:title="Create a meal plan"/>
                 <item
                     android:id="@+id/shopping"
                     android:title="View current shopping list"/>
                 <item
                     android:id="@+id/previous"
-                    android:title="View previous plans"/>
+                    android:title="View meal plans"/>
             </menu>
         </item>
         <item android:title="Recipes">
