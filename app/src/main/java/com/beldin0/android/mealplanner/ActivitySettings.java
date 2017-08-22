@@ -32,7 +32,7 @@ public class ActivitySettings extends AppCompatActivity {
 
 
         Spinner daySpinner = (Spinner) findViewById(R.id.day_spinner);
-        daySpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Day.WEEK_DAYS));
+        daySpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Week.WEEK_DAYS));
         do {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             int day = settings.getInt("startday", 0);
@@ -76,8 +76,8 @@ public class ActivitySettings extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONHelper.saveJSON("ingredients", IngredientList.getMasterList().toJSON());
-                JSONHelper.saveJSON("meals", MealList.getMasterList().toJSON());
+                JSONHelper.exportJSON("ingredients", IngredientList.getMasterList().toJSON());
+                JSONHelper.exportJSON("meals", MealList.getMasterList().toJSON());
             }
         });
 
@@ -89,8 +89,8 @@ public class ActivitySettings extends AppCompatActivity {
                 IngredientList.getMasterList().clear();
                 MealList.getMasterList().clear();
                 dr.reset();
-                ArrayFiller.fillFromJSON(IngredientList.getMasterList(), JSONHelper.loadJSON("ingredients"));
-                ArrayFiller.fillFromJSON(MealList.getMasterList(), JSONHelper.loadJSON("meals"));
+                ArrayFiller.fillFromJSON(IngredientList.getMasterList(), JSONHelper.importJSON("ingredients"));
+                ArrayFiller.fillFromJSON(MealList.getMasterList(), JSONHelper.importJSON("meals"));
                 ActivitySettings.this.finish();
             }
         });

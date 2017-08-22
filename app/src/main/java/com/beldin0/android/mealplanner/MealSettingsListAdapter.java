@@ -25,9 +25,9 @@ import com.example.android.mealplanner.R;
 public class MealSettingsListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private Day[] _listDataHeader;
+    private Week.Day[] _listDataHeader;
 
-    public MealSettingsListAdapter(Context context, Day[] week) {
+    public MealSettingsListAdapter(Context context, Week.Day[] week) {
         this._context = context;
         this._listDataHeader = week;
     }

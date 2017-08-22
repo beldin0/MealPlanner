@@ -108,7 +108,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(ActivityMain.this, ActivityShoppingList.class);
             startActivity(intent);
         } else if (id == R.id.previous) {
-            Intent intent = new Intent(ActivityMain.this, ActivityViewPlans.class);
+            Intent intent = new Intent(ActivityMain.this, ActivityListPlans.class);
             startActivity(intent);
         } else if (id == R.id.ingredients) {
             Intent intent = new Intent(ActivityMain.this, ActivityIngredients.class);

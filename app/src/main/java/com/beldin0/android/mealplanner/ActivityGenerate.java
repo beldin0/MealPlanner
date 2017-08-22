@@ -22,19 +22,19 @@ import java.util.Map;
 
 import static android.R.drawable.ic_media_play;
 import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
+import static com.beldin0.android.mealplanner.Week.getMasterWeekStartDate;
 
 public class ActivityGenerate extends AppCompatActivity {
     private MealSelector ms = new MealSelector();
     private DayAdapter adapter;
-    private SharedPreferences settings;
+
     private HashMap<Integer, MealOptions> options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
         options = (HashMap) ObjectBinder.getObj();
-        Day.setWeekStart(settings.getInt("startday", 0));
 
         generate();
 
@@ -43,7 +43,7 @@ public class ActivityGenerate extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Meal Plan");
+        getSupportActionBar().setTitle("Meal Plan " + getMasterWeekStartDate().replace("_", " "));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,7 +71,7 @@ public class ActivityGenerate extends AppCompatActivity {
             }
         });
 
-        adapter = new DayAdapter(this, Day.getMasterWeek());
+        adapter = new DayAdapter(this, Week.getMasterWeek());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -79,13 +79,13 @@ public class ActivityGenerate extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ms.refresh();
-                for (Day d : Day.getMasterWeek()) {
+                for (Week.Day d : Week.getMasterWeek()) {
                     ms.remove(d.getMeal());
                 }
                 if (options == null) {
-                    Day.getMasterWeek()[position].setMeal(ms.get());
+                    Week.getMasterWeek()[position].setMeal(ms.get());
                 } else {
-                    Day.getMasterWeek()[position].setMeal(ms.get(options.get(position)));
+                    Week.getMasterWeek()[position].setMeal(ms.get(options.get(position)));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -104,8 +104,10 @@ public class ActivityGenerate extends AppCompatActivity {
     }
 
     private void storeMeals() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        JSONHelper.saveJSON(ActivityGenerate.this, getMasterWeekStartDate(), Week.masterWeekToJSON());
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("meals", Day.getMealsAsString());
+        editor.putString("meals", Week.getMealsAsString());
         editor.apply();
     }
 
@@ -115,18 +117,18 @@ public class ActivityGenerate extends AppCompatActivity {
     }
 
     private void generate() {
-        Day.clear();
+        Week.clear();
         ms.refresh();
 
         if (!(options == null)) {
             for (Map.Entry<Integer, MealOptions> entry : options.entrySet()) {
-                Day d = Day.getMasterWeek()[entry.getKey()];
+                Week.Day d = Week.getMasterWeek()[entry.getKey()];
                 Log.d("Setting ", d.toString());
                 d.setMeal(ms.get(entry.getValue()));
             }
         }
 
-        for (Day d : Day.getMasterWeek()) {
+        for (Week.Day d : Week.getMasterWeek()) {
             if (d.getMeal() == null) {
                 d.setMeal(ms.get());
             }
@@ -145,9 +147,9 @@ public class ActivityGenerate extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (MealList.getMasterList().contains(eTxt.getText().toString())) {
-                    Day.getMasterWeek()[i].setMeal(MealList.getMasterList().get(eTxt.getText().toString()));
+                    Week.getMasterWeek()[i].setMeal(MealList.getMasterList().get(eTxt.getText().toString()));
                 } else {
-                    Day.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
+                    Week.getMasterWeek()[i].setMeal(new Meal("[" + eTxt.getText().toString() + "]"));
                 }
                 adapter.notifyDataSetChanged();
                 tmpDialog.dismiss();

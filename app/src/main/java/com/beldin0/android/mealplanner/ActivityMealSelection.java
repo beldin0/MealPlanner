@@ -1,6 +1,8 @@
 package com.beldin0.android.mealplanner;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +17,11 @@ import com.example.android.mealplanner.R;
 
 import java.util.HashMap;
 
+import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
+
 public class ActivityMealSelection extends AppCompatActivity {
 
+    private SharedPreferences settings;
     private HashMap<Integer, MealOptions> options;
 
     @Override
@@ -31,7 +36,10 @@ public class ActivityMealSelection extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final MealSettingsListAdapter selectionAdapter = new MealSettingsListAdapter(this, Day.getMasterWeek());
+        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Week.setWeekStart(settings.getInt("startday", 0));
+
+        final MealSettingsListAdapter selectionAdapter = new MealSettingsListAdapter(this, Week.getMasterWeek());
 
         final ExpandableListView eListView = (ExpandableListView) findViewById(R.id.expandable);
         eListView.setAdapter(selectionAdapter);

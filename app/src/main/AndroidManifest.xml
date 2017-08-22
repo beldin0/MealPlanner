@@ -27,7 +27,9 @@
         <activity android:name="com.beldin0.android.mealplanner.ActivityAddMeal"/>
         <activity android:name="com.beldin0.android.mealplanner.ActivitySettings"/>
         <activity android:name="com.beldin0.android.mealplanner.ActivityMealSelection"/>
-        <activity android:name="com.beldin0.android.mealplanner.ActivityViewPlans">
+        <activity android:name="com.beldin0.android.mealplanner.ActivityViewPlan">
+        </activity>
+        <activity android:name="com.beldin0.android.mealplanner.ActivityListPlans">
         </activity>
     </application>
 

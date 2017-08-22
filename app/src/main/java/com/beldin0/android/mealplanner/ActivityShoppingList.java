@@ -30,7 +30,7 @@ public class ActivityShoppingList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!Day.exists()) {
+        if (!Week.exists()) {
             fillEmptyWeek();
         }
 
@@ -46,13 +46,13 @@ public class ActivityShoppingList extends AppCompatActivity {
         FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
         btn.setVisibility(View.GONE);
 
-        sl.generate(Day.getMasterWeek());
+        sl.generate(Week.getMasterWeek());
 
         ShoppingListAdapter adapter = new ShoppingListAdapter(sl);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
-        save(Day.getWeekAsString() + sl.outputToString());
+        save(Week.getWeekAsString() + sl.outputToString());
     }
 
     public void save(String out) {
@@ -90,7 +90,7 @@ public class ActivityShoppingList extends AppCompatActivity {
         String mealnames = (settings.getString("meals", ""));
         String[] mealNames = mealnames.split("%");
         int c = 0;
-        for (Day d : Day.getMasterWeek()) {
+        for (Week.Day d : Week.getMasterWeek()) {
             d.setMeal(MealList.getMasterList().get(mealNames[c++]));
         }
     }

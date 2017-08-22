@@ -29,9 +29,9 @@ public class ShoppingList extends TreeMap<String, Pair<Ingredient, Quantity>> {
         }
     }
 
-    public void generate(Day[] week) {
+    public void generate(Week.Day[] week) {
 
-        for (Day d : week) {
+        for (Week.Day d : week) {
             this.add(d.getMeal());
         }
 

@@ -1,6 +1,7 @@
 package com.beldin0.android.mealplanner;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -105,6 +106,23 @@ public class ArrayFiller {
 		try {
 			String name = jsonObject.getString("name");
 			tmpMeal = new Meal(name);
+
+			try {
+				tmpMeal.setCookTime(jsonObject.getInt("cooktime"));
+			} catch (JSONException e) {
+				Log.d("MealFromJSON: ", name + " has no cooktime");
+			}
+			try {
+				tmpMeal.setType(Meal.MealType.toValue(jsonObject.getString("mealtype")));
+			} catch (JSONException e) {
+				Log.d("MealFromJSON: ", name + " has no mealtype");
+			}
+			try {
+				tmpMeal.inAdvance(jsonObject.getBoolean("inadvance"));
+			} catch (JSONException e) {
+				Log.d("MealFromJSON: ", name + " has no inadvance");
+			}
+
 			JSONArray jArr = jsonObject.getJSONArray("ingredients");
 			for (int i = 0; i < jArr.length(); i++) {
 				JSONObject tmpMealIngredient = jArr.getJSONObject(i);

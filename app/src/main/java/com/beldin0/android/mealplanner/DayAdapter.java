@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.example.android.mealplanner.R;
 
-public class DayAdapter extends ArrayAdapter<Day> {
+public class DayAdapter extends ArrayAdapter<Week.Day> {
 
-    public DayAdapter(Activity context, Day[] week)
+    public DayAdapter(Activity context, Week.Day[] week)
     {
         super(context, 0, week);
     }
@@ -37,14 +37,14 @@ public class DayAdapter extends ArrayAdapter<Day> {
 //        layout.setBackgroundColor(color);
 
         // Get the details of the current word from the words ArrayList
-        final Day currentDay = getItem(position);
+        final Week.Day day = getItem(position);
 
         // Set the text of TextView
         TextView textView = (TextView) listItemView.findViewById(R.id.day_name);
-        textView.setText(currentDay.toString());
+        textView.setText(day.toString());
 
         TextView textView2 = (TextView) listItemView.findViewById(R.id.day_meal);
-        textView2.setText(currentDay.getMeal().toString());
+        textView2.setText(day.getMeal().toString());
 
 //        ImageView imageView = (ImageView) listItemView.findViewById(R.id.icon_image);
 //        if (currentWord.hasImage()) {

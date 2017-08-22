@@ -91,7 +91,18 @@ public class Meal implements Comparable{
 
 	public String toJSON() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("{\"name\":\"" + name + "\",\"ingredients\":[");
+		sb.append("{");
+		sb.append("\"name\":\"" + name + "\",");
+		if (type != MealType.NONE) {
+			sb.append("\"mealtype\":\"" + type.toString() + "\",");
+		}
+		if (cookTime > 0) {
+			sb.append("\"cooktime\":\"" + cookTime + "\",");
+		}
+		if (inAdvance) {
+			sb.append("\"inadvance\":\"" + inAdvance + "\",");
+		}
+		sb.append("\"ingredients\":[");
 		int c = 0;
 		for (Ingredient i : ingredients.keySet()) {
 			sb.append("{\"ingredient\":\"" + i.toString() + "\", \"amount\":" + ingredients.get(i).getAmount() + ", \"unit\":\"" + ingredients.get(i).getUnitOnly() + "\"}");

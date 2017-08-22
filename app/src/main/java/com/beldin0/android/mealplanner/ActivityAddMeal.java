@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.mealplanner.R;
+
+import java.util.Arrays;
 
 public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
@@ -41,13 +44,16 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mealTypeSpinner = ((Spinner) findViewById(R.id.mealtype_spinner));
-        ArrayAdapter mtSpinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Meal.MealType.list());
+        ArrayAdapter<String> mtSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.asList(Meal.MealType.list()));
         mealTypeSpinner.setAdapter(mtSpinnerAdapter);
         tmpUnusedIngredients.putAll(IngredientList.getMasterList());
         if (ObjectBinder.hasObj()) {
             incomingMeal = (Meal) ObjectBinder.getObj();
-            mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType()));
+            if (incomingMeal.getType() != null) {
+                mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType().toString()));
+            }
             tmpMealIngredients.putAll(incomingMeal.getIngredients());
+            ((EditText) findViewById(R.id.cooktime)).setText(String.valueOf(incomingMeal.getCookTime()));
             ((CheckBox) findViewById(R.id.checkbox_advance)).setChecked(incomingMeal.inAdvance());
             ((EditText) findViewById(R.id.editText)).setText(incomingMeal.toString());
             ObjectBinder.clear();
@@ -83,7 +89,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         });
 
         final ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpMealIngredients.list()));
+        list.setAdapter(new ArrayAdapter<>(this, R.layout.simple_textview, tmpMealIngredients.list()));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,17 +128,16 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
             }
         });
 
-        Button addMealButton = (Button) findViewById(R.id.addbutton);
+        FloatingActionButton addMealButton = (FloatingActionButton) findViewById(R.id.addbutton);
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mealName = ((EditText) findViewById(R.id.editText)).getText().toString();
-                if (mealName == null) {
-
-                } else {
+                if (!mealName.equals("")) {
                     Meal m = new Meal(mealName);
                     m.add(tmpMealIngredients);
                     m.setType(Meal.MealType.toValue((String) mealTypeSpinner.getSelectedItem()));
+                    m.setCookTime(Integer.parseInt(((EditText) findViewById(R.id.cooktime)).getText().toString()));
                     if (((CheckBox) findViewById(R.id.checkbox_advance)).isChecked()) {
                         m.inAdvance(true);
                     }

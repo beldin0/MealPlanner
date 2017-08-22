@@ -1,7 +1,5 @@
 package com.beldin0.android.mealplanner;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,21 +9,16 @@ import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
 
-import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
-
-public class ActivityViewPlans extends AppCompatActivity {
-    private MealSelector ms = new MealSelector();
+public class ActivityViewPlan extends AppCompatActivity {
     private DayAdapter adapter;
-    private SharedPreferences settings;
+    private Week.Day[] week;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Day.setWeekStart(settings.getInt("startday", 0));
 
-        generate();
-
+        week = (Week.Day[]) ObjectBinder.getObj();
+        ObjectBinder.clear();
         setContentView(R.layout.activity_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -38,7 +31,7 @@ public class ActivityViewPlans extends AppCompatActivity {
         FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
         fbtn.setVisibility(View.GONE);
 
-        adapter = new DayAdapter(this, Day.getMasterWeek());
+        adapter = new DayAdapter(this, week);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -47,16 +40,6 @@ public class ActivityViewPlans extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-    }
-
-    private void generate() {
-
-        String mealnames = (settings.getString("meals", ""));
-        String[] mealNames = mealnames.split("%");
-        int c = 0;
-        for (Day d : Day.getMasterWeek()) {
-            d.setMeal(MealList.getMasterList().get(mealNames[c++]));
-        }
     }
 
     @Override
