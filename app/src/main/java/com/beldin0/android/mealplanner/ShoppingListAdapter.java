@@ -11,16 +11,23 @@ import android.widget.TextView;
 
 import com.example.android.mealplanner.R;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShoppingListAdapter extends BaseAdapter {
 
-    private TreeMap<String, Pair<Ingredient, Quantity>> map;
-    private String[] mKeys;
+    private HashMap<String, Pair<Ingredient, Quantity>> map;
+    private ArrayList<String> mKeys = new ArrayList<>();
 
-    public ShoppingListAdapter(TreeMap<String, Pair<Ingredient, Quantity>> map) {
+    public ShoppingListAdapter(HashMap<String, Pair<Ingredient, Quantity>> map) {
         this.map = map;
-        this.mKeys = map.keySet().toArray(new String[map.size()]);
+        generateKeys();
+    }
+
+    private void generateKeys() {
+        for (Pair p : map.values()) {
+            mKeys.add(p.first.toString());
+        }
     }
 
     @Override
@@ -30,7 +37,11 @@ public class ShoppingListAdapter extends BaseAdapter {
 
     @Override
     public Pair getItem(int position) {
-        return map.get(mKeys[position]);
+        return map.get(mKeys.get(position));
+    }
+
+    public String getKeyAt(int position) {
+        return mKeys.get(position);
     }
 
     @Override
@@ -53,14 +64,15 @@ public class ShoppingListAdapter extends BaseAdapter {
 
         // Get the details of the current word from the words ArrayList
         final Pair currentIngredient = getItem(position);
+        if (!(currentIngredient == null)) {
+            // Set the text of TextView
+            TextView textView = (TextView) listItemView.findViewById(R.id.day_name);
+            textView.setText(currentIngredient.first.toString());
 
-        // Set the text of TextView
-        TextView textView = (TextView) listItemView.findViewById(R.id.day_name);
-        textView.setText(currentIngredient.first.toString());
-
-        TextView textView2 = (TextView) listItemView.findViewById(R.id.day_meal);
-        textView2.setText(currentIngredient.second.toString());
-
+            TextView textView2 = (TextView) listItemView.findViewById(R.id.day_meal);
+            textView2.setText(currentIngredient.second.toString());
+        }
         return listItemView;
     }
+
 }

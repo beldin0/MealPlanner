@@ -22,7 +22,7 @@ import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
 public class ActivityMealSelection extends AppCompatActivity {
 
     private SharedPreferences settings;
-    private HashMap<Integer, MealOptions> options;
+    private HashMap<Integer, Meal.Options> options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class ActivityMealSelection extends AppCompatActivity {
                         CheckBox chkMax = (CheckBox) (view.findViewById(R.id.chk_Max));
                         SeekBar seekMax = (SeekBar) (view.findViewById(R.id.seek_Max));
 
-                        MealOptions m = new MealOptions();
+                        Meal.Options m = new Meal.Options();
                         if (chkType.isChecked()) {
                             m.setType(spinType.getText().toString());
                         }

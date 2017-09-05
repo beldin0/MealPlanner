@@ -1,12 +1,17 @@
 package com.beldin0.android.mealplanner;
 
 import android.support.annotation.NonNull;
+import android.util.Pair;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
-import static com.beldin0.android.mealplanner.ActivityMain.dr;
 import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 /**
@@ -27,7 +32,9 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
     public Ingredient get(String s) {
         Ingredient i = super.get(capitalizeFully(s));
         if (i == null) {
-            i = new Ingredient(s);
+            i = new Ingredient.IngredientBuilder()
+                    .setName(s)
+                    .create();
             master.put(i);
         }
         return i;
@@ -35,12 +42,10 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
 
     public void remove(Ingredient ingredient) {
         this.remove (ingredient.toString());
-        dr.delete(ingredient);
     }
 
     public Ingredient put (Ingredient ingredient) {
         Ingredient r = super.put(ingredient.toString(), ingredient);
-        dr.addToDatabase(ingredient);
         return r;
     }
 
@@ -63,17 +68,17 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
         return a;
     }
 
-    public void removeAll(IngredientList iList) {
-        for (Entry<String, Ingredient> entry : iList.entrySet()) {
-            this.remove(entry.getKey());
-        }
-    }
-
-    public void removeAll(IngredientMap iMap) {
-        for (Entry<Ingredient, Quantity> entry : iMap.entrySet()) {
-            this.remove(entry.getKey().toString());
-        }
-    }
+//    public void removeAll(ShoppingList iList) {
+//        for (Entry<String, Ingredient> entry : iList.entrySet()) {
+//            this.remove(entry.getKey());
+//        }
+//    }
+//
+//    public void removeAll(ShoppingList iMap) {
+//        for (Entry<Ingredient, Quantity> entry : iMap.entrySet()) {
+//            this.remove(entry.getKey().toString());
+//        }
+//    }
 
     public String toJSON() {
         StringBuilder sb = new StringBuilder();
@@ -86,15 +91,35 @@ public class IngredientList extends HashMap<String, Ingredient> implements Compa
             }
         }
         sb.append("]};");
-
-
         return sb.toString();
+    }
+
+    public void putAllFromJSON(String jsonString) throws JSONException {
+
+        IngredientList tmp = new IngredientList();
+        JSONArray m_jArry = new JSONObject(jsonString).getJSONArray("ingredients");
+
+        for (int i = 0; i < m_jArry.length(); i++) {
+            Ingredient ingredient = new Ingredient.IngredientBuilder()
+                    .fromJSONObject(m_jArry.getJSONObject(i))
+                    .create();
+            if (ingredient != null) {
+                tmp.put(ingredient);
+            }
+        }
+        this.putAll(tmp);
     }
 
     @Override
     public int compareTo(@NonNull Ingredient o) {
         Ingredient c = (Ingredient) o;
         return this.toString().compareTo(c.toString());
+    }
+
+    public void removeAll(ShoppingList list) {
+        for (Map.Entry<String, Pair<Ingredient, Quantity>> entry : list.entrySet()) {
+            this.remove(entry.getValue().first);
+        }
     }
 }
 

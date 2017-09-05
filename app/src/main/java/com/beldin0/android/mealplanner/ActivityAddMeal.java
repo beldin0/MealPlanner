@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +27,7 @@ import java.util.Arrays;
 
 public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
-    private final IngredientMap tmpMealIngredients = new IngredientMap();
+    private final ShoppingList tmpMealIngredients = new ShoppingList();
     private final IngredientList tmpUnusedIngredients = new IngredientList();
     private Spinner mealTypeSpinner;
     private Meal incomingMeal = null;
@@ -48,35 +50,40 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         mealTypeSpinner.setAdapter(mtSpinnerAdapter);
         tmpUnusedIngredients.putAll(IngredientList.getMasterList());
         if (ObjectBinder.hasObj()) {
-            incomingMeal = (Meal) ObjectBinder.getObj();
-            if (incomingMeal.getType() != null) {
-                mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType().toString()));
+            try {
+                incomingMeal = (Meal) ObjectBinder.getObj();
+                if (incomingMeal.getType() != null) {
+                    mealTypeSpinner.setSelection(mtSpinnerAdapter.getPosition(incomingMeal.getType().toString()));
+                }
+                tmpMealIngredients.putAll(incomingMeal.getIngredients());
+                ((EditText) findViewById(R.id.cooktime)).setText(String.valueOf(incomingMeal.getCookTime()));
+                ((CheckBox) findViewById(R.id.checkbox_advance)).setChecked(incomingMeal.inAdvance());
+                ((EditText) findViewById(R.id.editText)).setText(incomingMeal.toString());
+            } catch (ClassCastException e) {
+
+            } finally {
+                ObjectBinder.clear();
             }
-            tmpMealIngredients.putAll(incomingMeal.getIngredients());
-            ((EditText) findViewById(R.id.cooktime)).setText(String.valueOf(incomingMeal.getCookTime()));
-            ((CheckBox) findViewById(R.id.checkbox_advance)).setChecked(incomingMeal.inAdvance());
-            ((EditText) findViewById(R.id.editText)).setText(incomingMeal.toString());
-            ObjectBinder.clear();
         }
         prepare();
     }
 
     public void prepare() {
         tmpUnusedIngredients.removeAll(tmpMealIngredients);
-        ArrayAdapter ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpUnusedIngredients.list());
+        final ArrayAdapter ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tmpUnusedIngredients.list());
         ingredientAdapter.add("Add New...");
         Spinner ingredientSpinner = ((Spinner) findViewById(R.id.ingredient_spinner));
         ingredientSpinner.setAdapter(ingredientAdapter);
         if (ObjectBinder.hasObj()) {
             ingredientSpinner.setSelection(ingredientAdapter.getPosition(ObjectBinder.getObj()));
             ObjectBinder.clear();
-            addingIngredient();
+            addingIngredient(IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString()));
         }
 
         ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getSelectedItem().equals("Add New...")) {
+                if (parent.getSelectedItem().toString().equals("Add New...")) {
                     Intent ingredientsIntent = new Intent(ActivityAddMeal.this, ActivityAddIngredient.class);
                     startActivityForResult(ingredientsIntent, 0);
                 }
@@ -89,25 +96,31 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         });
 
         final ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(new ArrayAdapter<>(this, R.layout.simple_textview, tmpMealIngredients.list()));
+        final ShoppingListAdapter shoppingListAdapter = new ShoppingListAdapter(tmpMealIngredients);
+        list.setAdapter(shoppingListAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Ingredient item = IngredientList.getMasterList().get((String) parent.getItemAtPosition(position));
-                Toast.makeText(ActivityAddMeal.this, tmpMealIngredients.get(item).toString(), Toast.LENGTH_SHORT).show();
+                final Pair clickedIngredient = (Pair) parent.getItemAtPosition(position);
+                Ingredient item = (Ingredient) clickedIngredient.first;
+                addingIngredient(item);
             }
         });
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Ingredient clickedIngredient = IngredientList.getMasterList().get((String) parent.getItemAtPosition(position));
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                final Pair clickedIngredient = (Pair) parent.getItemAtPosition(position);
                 new AlertDialog.Builder(view.getContext())
-                        .setMessage(String.format("Delete %s?", clickedIngredient.toString()))
+                        .setMessage(String.format("Delete %s?", clickedIngredient.first.toString()))
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 changes = true;
-                                tmpUnusedIngredients.put(clickedIngredient);
-                                tmpMealIngredients.remove(clickedIngredient);
+                                tmpUnusedIngredients.put((Ingredient) clickedIngredient.first);
+                                String toBeRemoved = shoppingListAdapter.getKeyAt(position);
+                                if (ActivityMain.LOGGING) Log.d("DeleteMI", toBeRemoved);
+                                tmpMealIngredients.remove(toBeRemoved);
+                                ingredientAdapter.notifyDataSetChanged();
+                                shoppingListAdapter.notifyDataSetChanged();
                                 refresh();
                             }
                         })
@@ -116,7 +129,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
                                 dialog.dismiss();
                             }
                         }).show();
-                return false;
+                return true;
             }
         });
 
@@ -124,7 +137,7 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addingIngredient();
+                addingIngredient(IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString()));
             }
         });
 
@@ -134,13 +147,14 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
             public void onClick(View v) {
                 String mealName = ((EditText) findViewById(R.id.editText)).getText().toString();
                 if (!mealName.equals("")) {
-                    Meal m = new Meal(mealName);
+                    Meal m = new Meal.MealBuilder()
+                            .setName(mealName)
+                            .setType(Meal.MealType.toValue((String) mealTypeSpinner.getSelectedItem()))
+                            .setCookTime(Integer.parseInt(((EditText) findViewById(R.id.cooktime)).getText().toString()))
+                            .setInAdvance(((CheckBox) findViewById(R.id.checkbox_advance)).isChecked())
+                            .create();
                     m.add(tmpMealIngredients);
-                    m.setType(Meal.MealType.toValue((String) mealTypeSpinner.getSelectedItem()));
-                    m.setCookTime(Integer.parseInt(((EditText) findViewById(R.id.cooktime)).getText().toString()));
-                    if (((CheckBox) findViewById(R.id.checkbox_advance)).isChecked()) {
-                        m.inAdvance(true);
-                    }
+
                     if (!(incomingMeal == null)) {
                         MealList.getMasterList().remove(incomingMeal);
                     }
@@ -151,9 +165,8 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         });
     }
 
-    private void addingIngredient() {
+    private void addingIngredient(Ingredient ingredient) {
         changes = true;
-        Ingredient ingredient = IngredientList.getMasterList().get(((Spinner) findViewById(R.id.ingredient_spinner)).getSelectedItem().toString());
         final Dialog d = ingredientQuantityDialog(ingredient);
         d.show();
     }
@@ -170,11 +183,12 @@ public class ActivityAddMeal extends AppCompatActivity implements NumberPicker.O
         np.setWrapSelectorWheel(false);
         np.setOnValueChangedListener(ActivityAddMeal.this);
         final EditText eTxt = (EditText) tmpDialog.findViewById(R.id.quantity_units);
+        eTxt.setText(ingredient.getDefaultUnit());
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                tmpMealIngredients.put(ingredient, new Quantity(np.getValue(), eTxt.getText().toString()));
+                tmpMealIngredients.add(ingredient, new Quantity(np.getValue(), eTxt.getText().toString()));
                 refresh();
                 tmpDialog.dismiss();
             }

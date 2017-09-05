@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.example.android.mealplanner.R;
 
-public class DayAdapter extends ArrayAdapter<Week.Day> {
+public class WeekAdapter extends ArrayAdapter<Week.Day> {
 
-    public DayAdapter(Activity context, Week.Day[] week)
+    public WeekAdapter(Activity context, Week.Day[] week)
     {
         super(context, 0, week);
     }

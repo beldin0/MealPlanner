@@ -20,7 +20,7 @@ public class MealSelector extends ArrayList<Meal> {
 
     public Meal get() {
 
-        if (this.size() == 0) return new Meal("# Out of meals! #");
+        if (this.size() == 0) return new Meal.MealBuilder().setName("# Out of meals! #").create();
 
         int selection = ThreadLocalRandom.current().nextInt(0, this.size());
 
@@ -30,7 +30,7 @@ public class MealSelector extends ArrayList<Meal> {
 
     }
 
-    public Meal get(MealOptions options) {
+    public Meal get(Meal.Options options) {
 
         if (options == null) {
             return get();

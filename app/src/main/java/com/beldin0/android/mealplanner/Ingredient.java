@@ -1,6 +1,10 @@
 package com.beldin0.android.mealplanner;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -9,39 +13,22 @@ import static org.apache.commons.lang3.text.WordUtils.capitalizeFully;
 public class Ingredient implements Comparable {
 
 	private String name;
-	private Location loc = Location.UNKNOWN;
-	private boolean carb = false;
-	private boolean protein = false;
+    private Location loc;
+    private String defaultUnit;
+    private boolean carb;
+    private boolean protein;
 
-	public Ingredient(String name) {
-		this(capitalizeFully(name), false, false);
-	}
-	
-	public Ingredient(String name, boolean carb, boolean protein) {
-		this(capitalizeFully(name), Location.UNKNOWN, carb, protein);
-	}
-	
-	public Ingredient(String name, Location loc, boolean carb, boolean protein) {
-		this.name = capitalizeFully(name);
-		this.carb = carb;
-		this.protein = protein;
-		this.loc = loc;
-	}
-
-	public Ingredient(String name, String loc, boolean carb, boolean protein) {
-		this.name = capitalizeFully(name);
-		this.carb = carb;
-		this.protein = protein;
-		this.loc = Location.toValue(loc);
-	}
-
-	public static void add(IngredientList list, String name, Location loc, boolean carb, boolean protein) {
-        list.put(capitalizeFully(name), new Ingredient(capitalizeFully(name), loc, carb, protein));
+    private Ingredient(IngredientBuilder b) {
+        this.name = capitalizeFully(b.name);
+        this.defaultUnit = b.defaultUnit;
+        this.carb = b.carb;
+        this.protein = b.protein;
+        this.loc = b.loc;
     }
 
-	public String getInfo() {
-        return name + (this.carb? " (carb)" : (this.protein? " (protein)" : "")) + "\nFound in: " + loc.toString();
-	}
+    public String getDefaultUnit() {
+        return defaultUnit;
+    }
 
 	public Location location() {
 		return loc;
@@ -62,16 +49,21 @@ public class Ingredient implements Comparable {
 
 	public boolean isUsed() {
         for (Meal m : MealList.getMasterList()) {
-            if (m.getIngredientsAsArray().contains(this)) {
-				return true;
-			}
+            if (m.getIngredients().contains(this)) {
+                return true;
+            }
 		}
 		return false;
 	}
 
 	public String toJSON() {
-		return "{\"name\":\"" + name + "\",\"location\":\"" + loc.toString() + "\",\"carb\":" + this.carb + ",\"protein\":" + this.protein + "}";
-	}
+        return "{\"name\":\"" + name
+                + "\",\"location\":\"" + loc.toString() + "\""
+                + ",\"carb\":" + this.carb
+                + ",\"protein\":" + this.protein
+                + ",\"unit\":\"" + (this.defaultUnit == null ? "" : this.defaultUnit) + "\""
+                + "}";
+    }
 
     @Override
     public int compareTo(@NonNull Object o) {
@@ -117,7 +109,78 @@ public class Ingredient implements Comparable {
 
 		public String toString() {
 			return locString;
-		}
+        }
+
+    }
+
+    public static class IngredientBuilder {
+        private String name;
+        private Location loc = Location.UNKNOWN;
+        private String defaultUnit;
+        private boolean carb = false;
+        private boolean protein = false;
+
+        public IngredientBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public IngredientBuilder setLocation(String location) {
+            this.loc = Location.toValue(location);
+            return this;
+        }
+
+        public IngredientBuilder setDefaultUnit(String unit) {
+            this.defaultUnit = unit;
+            return this;
+        }
+
+        public IngredientBuilder setCarb(boolean carb) {
+            this.carb = carb;
+            return this;
+        }
+
+        public IngredientBuilder setProtein(boolean protein) {
+            this.protein = protein;
+            return this;
+        }
+
+        public Ingredient create() {
+            return new Ingredient(this);
+        }
+
+        public IngredientBuilder fromJSONObject(JSONObject jsonObject) {
+
+            try {
+                this.name = jsonObject.getString("name");
+                try {
+                    this.loc = Location.toValue(jsonObject.getString("location"));
+                } catch (JSONException e) {
+                    if (ActivityMain.LOGGING)
+                        Log.v("IngredientFromJSON: ", name + " has no location");
+                }
+                try {
+                    this.carb = jsonObject.getBoolean("carb");
+                } catch (JSONException e) {
+                    if (ActivityMain.LOGGING) Log.v("IngredientFromJSON: ", name + " has no carb");
+                }
+                try {
+                    this.protein = jsonObject.getBoolean("protein");
+                } catch (JSONException e) {
+                    if (ActivityMain.LOGGING)
+                        Log.v("IngredientFromJSON: ", name + " has no protein");
+                }
+                try {
+                    this.defaultUnit = jsonObject.getString("unit");
+                } catch (JSONException e) {
+                    if (ActivityMain.LOGGING) Log.v("IngredientFromJSON: ", name + " has no unit");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return this;
+        }
 
     }
 

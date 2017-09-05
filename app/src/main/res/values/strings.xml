@@ -13,7 +13,7 @@
     <string name="meal_type">Meal Type</string>
     <string name="meal_in_advance_text">This can be cooked in advance</string>
     <string name="meal">Meal:</string>
-    <string name="add_this_ingredient">Add this ingredient</string>
+    <string name="add_this_ingredient">Add</string>
     <string name="save_this_meal">Save this meal</string>
     <string name="unit">Unit (e.g. g)</string>
     <string name="ok">OK</string>

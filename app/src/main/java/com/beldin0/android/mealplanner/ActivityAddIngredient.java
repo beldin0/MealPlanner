@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,6 +52,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
             ((CheckBox) findViewById(R.id.checkbox_protein)).setChecked(incomingIngredient.isProtein());
             ((CheckBox) findViewById(R.id.checkbox_carb)).setChecked(incomingIngredient.isCarb());
             ((EditText) findViewById(R.id.editText)).setText(incomingIngredient.toString());
+            ((EditText) findViewById(R.id.editText2)).setText(incomingIngredient.getDefaultUnit());
             ObjectBinder.clear();
         }
 
@@ -74,7 +76,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.submit_new_ingredient).setOnClickListener(new AdapterView.OnClickListener() {
+        findViewById(R.id.fab).setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 changes = true;
@@ -82,14 +84,19 @@ public class ActivityAddIngredient extends AppCompatActivity {
                     IngredientList.getMasterList().remove(incomingIngredient);
                 }
 
-                Ingredient i = new Ingredient(
-                        ((EditText)findViewById(R.id.editText)).getText().toString(),
-                        Ingredient.Location.toValue(((Spinner)findViewById(R.id.location_spinner)).getSelectedItem().toString()),
-                        ((CheckBox)findViewById(R.id.checkbox_carb)).isChecked(),
-                        ((CheckBox) findViewById(R.id.checkbox_protein)).isChecked());
+                Ingredient i = new Ingredient.IngredientBuilder()
+                        .setName(((EditText) findViewById(R.id.editText)).getText().toString())
+                        .setLocation(((Spinner) findViewById(R.id.location_spinner)).getSelectedItem().toString())
+                        .setCarb(((CheckBox) findViewById(R.id.checkbox_carb)).isChecked())
+                        .setProtein(((CheckBox) findViewById(R.id.checkbox_protein)).isChecked())
+                        .setDefaultUnit(((EditText) findViewById(R.id.editText2)).getText().toString())
+                        .create();
                 IngredientList.getMasterList().put(i);
                 ObjectBinder.setObj(i);
                 setResult(Activity.RESULT_OK);
+                String jsonString = IngredientList.getMasterList().toJSON();
+                Log.d("AddIngredient", i.toJSON());
+                DataManager.getInstance().saveIngredients(jsonString);
                 finish();
             }
         });
@@ -104,6 +111,7 @@ public class ActivityAddIngredient extends AppCompatActivity {
             return false;
         } else {
             onBackPressed();
+            DataManager.getInstance().saveIngredients(IngredientList.getMasterList().toJSON());
             return true;
         }
     }

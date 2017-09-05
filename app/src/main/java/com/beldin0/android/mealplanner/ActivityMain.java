@@ -21,8 +21,8 @@ import com.example.android.mealplanner.R;
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String PREFS_NAME = "preferences";
+    public static final boolean LOGGING = false;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    static DataManager dr;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -63,11 +63,11 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             }
         } while (false);
 
-        dr = new DataManager(this);
-
-        IngredientList.getMasterList().putAll(ArrayFiller.getIngredients(ActivityMain.this));
-
-        MealList.getMasterList().addAll(ArrayFiller.getMeals(ActivityMain.this));
+        DataManager.getInstance(this);
+        IngredientList.getMasterList().clear();
+        IngredientList.getMasterList().putAll(DataManager.getInstance().getIngredients());
+        MealList.getMasterList().clear();
+        MealList.getMasterList().addAll(DataManager.getInstance().getMeals());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

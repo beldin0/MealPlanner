@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,8 +14,9 @@ import android.widget.Spinner;
 
 import com.example.android.mealplanner.R;
 
+import org.json.JSONException;
+
 import static com.beldin0.android.mealplanner.ActivityMain.PREFS_NAME;
-import static com.beldin0.android.mealplanner.ActivityMain.dr;
 
 public class ActivitySettings extends AppCompatActivity {
 
@@ -59,15 +61,18 @@ public class ActivitySettings extends AppCompatActivity {
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ActivityMain.LOGGING) Log.d("ActivitySettings:", "Resetting to defaults");
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove("meals");
                 editor.apply();
+
+                DataManager.getInstance().deleteUserData();
                 IngredientList.getMasterList().clear();
+                IngredientList.getMasterList().putAll(DataManager.getInstance().getIngredients());
                 MealList.getMasterList().clear();
-                dr.reset();
-                IngredientList.getMasterList().putAll(ArrayFiller.getIngredients(ActivitySettings.this));
-                MealList.getMasterList().addAll(ArrayFiller.getMeals(ActivitySettings.this));
+                MealList.getMasterList().addAll(DataManager.getInstance().getMeals());
+
                 ActivitySettings.this.finish();
             }
         });
@@ -76,8 +81,9 @@ public class ActivitySettings extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONHelper.exportJSON("ingredients", IngredientList.getMasterList().toJSON());
-                JSONHelper.exportJSON("meals", MealList.getMasterList().toJSON());
+                if (ActivityMain.LOGGING) Log.d("ActivitySettings:", "Saving to file");
+                DataManager.getInstance().exportJSON("ingredients", IngredientList.getMasterList().toJSON());
+                DataManager.getInstance().exportJSON("meals", MealList.getMasterList().toJSON());
             }
         });
 
@@ -86,11 +92,22 @@ public class ActivitySettings extends AppCompatActivity {
         loadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IngredientList.getMasterList().clear();
-                MealList.getMasterList().clear();
-                dr.reset();
-                ArrayFiller.fillFromJSON(IngredientList.getMasterList(), JSONHelper.importJSON("ingredients"));
-                ArrayFiller.fillFromJSON(MealList.getMasterList(), JSONHelper.importJSON("meals"));
+                if (ActivityMain.LOGGING) Log.d("ActivitySettings:", "Loading from saved file");
+                DataManager dm = DataManager.getInstance();
+                try {
+                    String jsonString = dm.importJSON("ingredients");
+
+                    IngredientList.getMasterList().clear();
+                    IngredientList.getMasterList().putAllFromJSON(jsonString);
+                    dm.saveIngredients(jsonString);
+
+                    jsonString = dm.importJSON("meals");
+                    MealList.getMasterList().clear();
+                    MealList.getMasterList().addAllFromJSON(jsonString);
+                    dm.saveMeals(jsonString);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 ActivitySettings.this.finish();
             }
         });

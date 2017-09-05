@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.example.android.mealplanner.R;
 
 public class ActivityViewPlan extends AppCompatActivity {
-    private DayAdapter adapter;
+    private WeekAdapter adapter;
     private Week.Day[] week;
 
     @Override
@@ -31,7 +31,7 @@ public class ActivityViewPlan extends AppCompatActivity {
         FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
         fbtn.setVisibility(View.GONE);
 
-        adapter = new DayAdapter(this, week);
+        adapter = new WeekAdapter(this, week);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 

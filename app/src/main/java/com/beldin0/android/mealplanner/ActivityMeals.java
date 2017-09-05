@@ -9,18 +9,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.android.mealplanner.R;
 
 public class ActivityMeals extends AppCompatActivity {
 
-    private MealAdapter adapter;
+    private ArrayAdapter<Meal> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set up the view
         setContentView(R.layout.activity_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -30,10 +32,14 @@ public class ActivityMeals extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        adapter = new MealAdapter(this, MealList.getMasterList());
+
+        // Set up the list
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, MealList.getMasterList());
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
 
+
+        // Set up listeners on list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -66,6 +72,8 @@ public class ActivityMeals extends AppCompatActivity {
             }
         });
 
+
+        // Set up listener on button
         FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
         btn.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
@@ -88,6 +96,7 @@ public class ActivityMeals extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        DataManager.getInstance().saveMeals(MealList.getMasterList().toJSON());
         onBackPressed();
         return true;
     }

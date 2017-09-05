@@ -1,9 +1,12 @@
 package com.beldin0.android.mealplanner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.beldin0.android.mealplanner.ActivityMain.dr;
 import static org.apache.commons.lang.WordUtils.capitalizeFully;
 
 /**
@@ -33,7 +36,6 @@ public class MealList extends ArrayList<Meal> {
         }
         boolean b = super.add(m);
         if (addToDatabase) {
-            dr.addToDatabase(m);
         }
         Collections.sort(this);
         return b;
@@ -42,7 +44,6 @@ public class MealList extends ArrayList<Meal> {
     @Override
     public boolean remove (Object o) {
         boolean b = super.remove(o);
-        dr.delete((Meal)o);
         return b;
     }
 
@@ -59,6 +60,20 @@ public class MealList extends ArrayList<Meal> {
         ;
         sb.append("]};");
         return sb.toString();
+    }
+
+    public void addAllFromJSON(String jsonString) throws JSONException {
+        MealList tmp = new MealList();
+        JSONObject json = new JSONObject(jsonString);
+        JSONArray m_jArry = json.getJSONArray("meals");
+
+        for (int i = 0; i < m_jArry.length(); i++) {
+            Meal tmpMeal = new Meal.MealBuilder()
+                    .fromJSONObject(m_jArry.getJSONObject(i))
+                    .create();
+            tmp.add(tmpMeal, true);
+        }
+        this.addAll(tmp);
     }
 
     public boolean contains(Meal m) {
@@ -80,7 +95,7 @@ public class MealList extends ArrayList<Meal> {
         for (Meal meal : master) {
             if (meal.toString().equals(s)) return meal;
         }
-        return new Meal("[" + s.replace("[", "").replace("]", "") + "]");
+        return new Meal.MealBuilder().setName("[" + s.replace("[", "").replace("]", "") + "]").create();
     }
 
 }
